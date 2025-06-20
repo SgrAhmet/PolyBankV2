@@ -10,9 +10,12 @@
   },
   "dependencies": {
     "expo": "~53.0.12",
+    "expo-av": "^15.1.6",
     "expo-status-bar": "~2.2.3",
     "react": "19.0.0",
-    "react-native": "0.79.4"
+    "react-native": "0.79.4",
+    "react-native-sound": "^0.11.2",
+    "react-native-vector-icons": "^10.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
