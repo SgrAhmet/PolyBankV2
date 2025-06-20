@@ -24,7 +24,7 @@ const Main = () => {
   const [gamers, setGamers] = useState([
     {
       name: "Banka",
-      money: 999999,
+      money: "∞",
     },
   ]);
 
