@@ -4,8 +4,8 @@ import Icon5 from "react-native-vector-icons/FontAwesome5";
 import Icon from "react-native-vector-icons/FontAwesome";
 import IconIon from "react-native-vector-icons/Ionicons";
 import colors from "./Colors";
-const PlayerListItem = ({ index, name, money, selecteds, setSelecteds }) => {
-  // console.log(index + " " + name)
+const PlayerListItem = ({ index, name, money, selecteds, setSelecteds,gamers,setGamers,isEditVisible,history,setHistory }) => {
+
  
   const changePozitive = () => {
     // if(selecteds.negatif != index){
@@ -27,6 +27,19 @@ const PlayerListItem = ({ index, name, money, selecteds, setSelecteds }) => {
   if (selecteds.pozitif == index) {
     stylePozitive.push({ backgroundColor: colors.lightGreen });
   }
+
+  const deleteGamer =()=>{
+    setHistory([{pozitif:name,negatif:"Banka",quantity:"deleteGamer"},...history,])
+    setGamers(prev => prev.filter((_, i) => i !== index));
+  }
+
+
+  let styleDelete =[styles.deleteBtn,{display:"none"}]
+  if(isEditVisible){
+    styleDelete.pop()
+  }
+
+
   return (
     <View style={styles.container}>
       {/* <IconIon name="person" size={32} color={colors.white} /> */}
@@ -38,7 +51,7 @@ const PlayerListItem = ({ index, name, money, selecteds, setSelecteds }) => {
       )}
 
       <Text style={styles.h3Text}>{name}</Text>
-      <Text style={styles.h3Text}>{money} tl</Text>
+      <Text style={styles.h3Text}>{money} ₩</Text>
       <View style={styles.btnsArea}>
         <TouchableOpacity style={stylePozitive} onPress={changePozitive}>
           <Icon5 name="plus" size={32} color={colors.white} />
@@ -46,7 +59,12 @@ const PlayerListItem = ({ index, name, money, selecteds, setSelecteds }) => {
         <TouchableOpacity style={styleNegative} onPress={changeNegative}>
           <Icon5 name="minus" size={32} color={colors.white} />
         </TouchableOpacity>
+
+        
       </View>
+      <TouchableOpacity style={name != "Banka" ? styleDelete : {display : "none"}} onPress={deleteGamer}>
+          <Icon5 name="ban" size={32} color={"red"} />
+        </TouchableOpacity>
     </View>
   );
 };
@@ -96,6 +114,11 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 10,
   },
+  deleteBtn:{
+    position:"absolute",
+    left:-3,
+    top:-10
+  }
 });
 
 export default PlayerListItem;
