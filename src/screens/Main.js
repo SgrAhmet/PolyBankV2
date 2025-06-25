@@ -11,10 +11,10 @@ import {
 import Icon6 from "react-native-vector-icons/FontAwesome6";
 import Icon5 from "react-native-vector-icons/FontAwesome5";
 import IconIon from "react-native-vector-icons/Ionicons";
-import colors from "./Colors";
-import PlayerListItem from "./PlayerListItem";
+import colors from "../Colors";
+import PlayerListItem from "../PlayerListItem";
 import { Audio } from "expo-av";
-
+// import x from "../"
 const Main = () => {
   const [isEditVisible, setIsEditVisible] = useState(false);
   const [newGamerName, setNewGamerName] = useState("");
@@ -59,7 +59,7 @@ const Main = () => {
 
   const playSound = async () => {
     const { sound } = await Audio.Sound.createAsync(
-      require("./soundEffect2.mp3")
+      require("../soundEffect2.mp3")
     );
     setSound(sound);
     await sound.playAsync();
