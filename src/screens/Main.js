@@ -7,6 +7,7 @@ import {
   TextInput,
   ScrollView,
   Modal,
+  Alert
 } from "react-native";
 import Icon6 from "react-native-vector-icons/FontAwesome6";
 import Icon5 from "react-native-vector-icons/FontAwesome5";
@@ -14,7 +15,9 @@ import IconIon from "react-native-vector-icons/Ionicons";
 import colors from "../Colors";
 import PlayerListItem from "../PlayerListItem";
 import { Audio } from "expo-av";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // import x from "../"
+
 const Main = () => {
   const [isEditVisible, setIsEditVisible] = useState(false);
   const [newGamerName, setNewGamerName] = useState("");
@@ -34,6 +37,64 @@ const Main = () => {
 
   const [modalVisible, setModalVisible] = useState(false);
 
+
+  const setAsyncItem= async () => {
+    try {
+      await AsyncStorage.setItem(
+        'offlineGamers',
+        JSON.stringify(gamers),
+      );
+      await AsyncStorage.setItem(
+        'offlineHistory',
+        JSON.stringify(history),
+      );
+      console.warn("AsyncStorage Setted")
+    } catch (error) {
+      // Error saving data
+    }
+  };
+
+  const getAsyncItem = async () => {
+    try {
+      const offlineGamers = await AsyncStorage.getItem('offlineGamers');
+      const offlineHistory = await AsyncStorage.getItem('offlineHistory');
+      if (offlineGamers !== null && offlineHistory !== null) {
+        // We have data!!
+        // console.log(JSON.parse(offlineGamers));
+        // console.log(JSON.parse(offlineHistory));
+        setGamers(JSON.parse(offlineGamers))
+        setHistory(JSON.parse(offlineHistory))
+      }
+    } catch (error) {
+      // Error retrieving data
+      console.log("Erorrrrs");
+    }
+  };
+
+  useEffect(() => {
+    getAsyncItem()
+  }, [])
+  
+
+  // const consoleAsyncStorage =async()=>{
+
+  //   const data1 =await AsyncStorage.getItem("offlineGamers")
+  //   const data2 =await AsyncStorage.getItem("offlineGamers")
+
+  //   if (data1 !== null && data2 !== null) {
+
+  //     console.log(JSON.parse(data1));
+  //     console.log(JSON.parse(data2));
+
+  //   }
+  // }
+
+  useEffect(() => {
+      setAsyncItem()
+      // consoleAsyncStorage()
+
+  }, [gamers,history])
+  
   const addNewGamer = () => {
 
     if(newGamerName.trim() != ""){
@@ -48,7 +109,7 @@ const Main = () => {
 
     }
 
-
+    // setAsyncItem()
   };
 
   const handleMoneyBill = (e) => {
@@ -101,15 +162,42 @@ const Main = () => {
         quantity: moneyQuantity,
       };
       setHistory([ historyItem,...history,]);
+
+      // setAsyncItem()
     } else {
-      console.log("jsfdjsd");
+      // console.log("Error");
     }
+
+
   };
 
   const handleHistory = () => {
+    
     setModalVisible(true);
-    // console.log(history);
+    // getAsyncItem()
   };
+
+  const resetGame =()=>{
+    // console.log("Game Reset");
+
+    setGamers([
+      {
+        name: "Banka",
+        money: "∞",
+      },
+    ])
+    setHistory([])
+  }
+  const handleReset =()=>{
+    Alert.alert("Oyunu Sıfırlamak","Oyunu Sıfırlamak İstediğinizden Emin Misiniz ?",[
+      {
+        text: 'Hayır',
+        // onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'Evet', onPress: resetGame},
+    ])
+  }
   return (
     <View style={styles.container}>
       {/* ====== Banner ====== */}
@@ -128,6 +216,7 @@ const Main = () => {
               });
               setMoneyQuantity(0);
             }}
+            onLongPress={handleReset}
           >
             <Icon5 name="undo-alt" size={24} color={colors.white} />
           </TouchableOpacity>
