@@ -4,39 +4,83 @@ import colors from '../Colors';
 
 
 
-import {collection,getDocs,addDoc,deleteDoc,updateDoc,doc} from "firebase/firestore";
+import {collection,getDoc,addDoc,deleteDoc,updateDoc,doc,setDoc} from "firebase/firestore";
 import { db } from "../../firestore"; // Firebase yapılandırma dosyanızın yolu
 
 
 
-const OnlineEnterence = () => {
+const OnlineEnterence = ({navigation}) => {
     const [test, setTest] = useState("Waiting...")
 
-    const getDocument= async () => {
-        try {
-          const querySnapshot = await getDocs(collection(db, "deneme"));
-          const data = querySnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data(),
-          }));  
+   
+    const generateRoomId = () => {
+      return Math.floor(100000 + Math.random() * 900000).toString(); // 6 haneli
+    };
 
-          console.log("data is");
-          console.log(data);
-          setTest(data[0].test1)
+    
+    const createRoom = async () => {
+      let roomId;
+      let roomRef;
+      let exists = true;
+    
+      while (exists) {
+        roomId = generateRoomId();
+        roomRef = doc(db, "deneme", roomId);
+        const docSnap = await getDoc(roomRef);
+        exists = docSnap.exists();
+        console.log("Oda ID:", roomId, "| Var mı?", exists); // Bu satırı ekle
+      }
+    
+      await setDoc(roomRef, {
+        gamers: [  {
+          name: "Banka",
+          money: "∞",
+        }],
+        history : [],
+        createdAt: Date.now(),
+      });
+    
+      console.log("Oda oluşturuldu:", roomId);
+      setTest("Oda: " + roomId);
+
+      navigation.navigate("OnlineMain" , {roomId : roomId})
+    };
+    
+    const addDocument= async () => {
+      try {
+        
+          const ordersCollectionRef = collection(db, "deneme");
+          await (ordersCollectionRef, {test1 : "Test1"} );
+          
         } catch (error) {
-          console.error("Error fetching data: ", error);
+          console.error("Error adding new order: ", error);
         }
       };
+      
 
+      // const getDocument= async () => {
+      //     try {
+      //       const querySnapshot = await getDocs(collection(db, "deneme"));
+      //       const data = querySnapshot.docs.map(doc => ({
+      //         id: doc.id,
+      //         ...doc.data(),
+      //       }));  
+      
+      //       console.log("data is");
+      //       console.log(data);
+      //       setTest(data[0].test1)
+      //     } catch (error) {
+      //       console.error("Error fetching data: ", error);
+      //     }
+      //   };
 
-
-      getDocument()
-
-  return (
-    <View style={styles.container}>
+      // getDocument()
+      
+      return (
+        <View style={styles.container}>
       <Text>OnlineEnterence  -   {test} </Text>
-      <TouchableOpacity onPress={() => navigation.navigate("OnlineEnterence")}><Text>Create Room</Text></TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("Main")}><Text>Enter a Room</Text></TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => createRoom()}><Text>Create Room</Text></TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => console.log( Math.floor(100000 + Math.random() * 900000).toString())}><Text>Enter a Room</Text></TouchableOpacity>
     </View>
   );
 };
@@ -49,6 +93,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 5,
   },
+  button:{
+    backgroundColor:colors.brown,
+    padding:10,
+    borderRadius:10,
+    margin:10
+  }
 });
 
 export default OnlineEnterence;

@@ -8,6 +8,7 @@ const Stack = createNativeStackNavigator();
 import Main from "./src/screens/Main";
 import Enterence from "./src/screens/Enterence";
 import OnlineEnterence from "./src/screens/OnlineEnterence";
+import OnlineMain from "./src/screens/OnlineMain";
 
 
 export default function App() {
@@ -25,6 +26,7 @@ export default function App() {
         <Stack.Screen name="Main" component={Main} />
         <Stack.Screen name="Enterence" component={Enterence} />
         <Stack.Screen name="OnlineEnterence" component={OnlineEnterence} />
+        <Stack.Screen name="OnlineMain" component={OnlineMain} />
       </Stack.Navigator>
     </NavigationContainer>
 

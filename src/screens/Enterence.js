@@ -6,8 +6,8 @@ const Enterence = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Text>Enterence</Text>
-      <TouchableOpacity onPress={() => navigation.navigate("OnlineEnterence")}><Text>Go To Online</Text></TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("Main")}><Text>Go To Offline</Text></TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("OnlineEnterence")}><Text>Go To Online</Text></TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Main")}><Text>Go To Offline</Text></TouchableOpacity>
     </View>
   );
 };
@@ -20,6 +20,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 5,
   },
+  button:{
+    backgroundColor:colors.brown,
+    padding:10,
+    borderRadius:10,
+    margin:10
+  }
 });
 
 export default Enterence;
