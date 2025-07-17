@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
@@ -8,6 +7,7 @@ import {
   TextInput,
   ScrollView,
   Modal,
+  Alert
 } from "react-native";
 import Icon6 from "react-native-vector-icons/FontAwesome6";
 import Icon5 from "react-native-vector-icons/FontAwesome5";
@@ -15,15 +15,23 @@ import IconIon from "react-native-vector-icons/Ionicons";
 import colors from "../Colors";
 import PlayerListItem from "../PlayerListItem";
 import { Audio } from "expo-av";
-import {collection,getDoc,addDoc,deleteDoc,updateDoc,doc,setDoc,onSnapshot} from "firebase/firestore";
+import {
+  collection,
+  getDoc,
+  addDoc,
+  deleteDoc,
+  updateDoc,
+  doc,
+  setDoc,
+  onSnapshot,
+} from "firebase/firestore";
 import { db } from "../../firestore"; // Firebase yapılandırma dosyanızın yolu
 
 // import x from "../"
-const OnlineMain = ({route}) => {
-
-  const {roomId} = route.params;
-
-  console.log("roomId is " + roomId);
+const OnlineMain = ({ route }) => {
+  const { roomId,spectator } = route.params;
+  // console.log(spectator)
+  // console.log("roomId is " + roomId);
 
   const [isEditVisible, setIsEditVisible] = useState(false);
   const [newGamerName, setNewGamerName] = useState("");
@@ -32,21 +40,13 @@ const OnlineMain = ({route}) => {
     negatif: null,
   });
   const [moneyQuantity, setMoneyQuantity] = useState(0);
-  const [gamers, setGamers] = useState([
-    {
-      name: "Banka",
-      money: "∞",
-    },
-  ]);
+  const [gamers, setGamers] = useState([]);
 
   const [history, setHistory] = useState([]);
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  const [data, setData] = useState({})
-
-
-
+  const [data, setData] = useState({});
 
   useEffect(() => {
     // Belirli bir document'i (roomID'ye göre) dinlemek için onSnapshot kullanıyoruz
@@ -55,9 +55,9 @@ const OnlineMain = ({route}) => {
     const unsubscribe = onSnapshot(docRef, (docSnap) => {
       if (docSnap.exists()) {
         // setData({ id: docSnap.id, ...docSnap.data() }); // Veriyi state'e set et
-        console.log("onSnapshot Çalıştı");
+        // console.log("onSnapshot Çalıştı");
         setData(docSnap.data());
-        console.log(docSnap.data());
+        // console.log(docSnap.data());
       } else {
         console.log("No such document!");
       }
@@ -66,32 +66,38 @@ const OnlineMain = ({route}) => {
     return () => unsubscribe();
   }, [roomId]);
 
+  useEffect(() => {
+    setGamers(data.gamers);
+    setHistory(data.history);
+  }, [data]);
+
+  const updateDocument = async () => {
+    try {
+      const orderDocRef = doc(db, "deneme", roomId);
+      await updateDoc(orderDocRef, { gamers, history });
+      // await updateDoc(orderDocRef, { history });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    setGamers(data.gamers)
-    setHistory(data.history)
-  }, [data])
-  
+    if (gamers != undefined && history != undefined) {
+      if (gamers[0]) {
+        updateDocument();
+      }
+    }
+  }, [gamers, history]);
 
   const addNewGamer = () => {
-
-    if(newGamerName.trim() != ""){
-
+    if (newGamerName.trim() != "") {
       setGamers([...gamers, { name: newGamerName, money: 0 }]);
       setHistory([
-        
         { pozitif: newGamerName, negatif: "Banka", quantity: "newGamer" },
-        ...history
+        ...history,
       ]);
       setNewGamerName("");
-
-
-
-      
-
     }
-
-
   };
 
   const handleMoneyBill = (e) => {
@@ -135,7 +141,6 @@ const OnlineMain = ({route}) => {
 
         setGamers(updatedGamers);
         setMoneyQuantity(0); // Para miktarını sıfırla
-
         playSound();
       }
       let historyItem = {
@@ -143,7 +148,7 @@ const OnlineMain = ({route}) => {
         negatif: gamers[selecteds.negatif].name,
         quantity: moneyQuantity,
       };
-      setHistory([ historyItem,...history,]);
+      setHistory([historyItem, ...history]);
     } else {
       console.log("jsfdjsd");
     }
@@ -153,6 +158,32 @@ const OnlineMain = ({route}) => {
     setModalVisible(true);
     // console.log(history);
   };
+
+
+
+
+  const resetGame =()=>{
+    // console.log("Game Reset");
+
+    setGamers([
+      {
+        name: "Banka",
+        money: "∞",
+      },
+    ])
+    setHistory([])
+  }
+  const handleReset =()=>{
+    Alert.alert("Oyunu Sıfırlamak","Oyunu Sıfırlamak İstediğinizden Emin Misiniz ?",[
+      {
+        text: 'Hayır',
+        // onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'Evet', onPress: resetGame},
+    ])
+  }
+
   return (
     <View style={styles.container}>
       {/* ====== Banner ====== */}
@@ -164,6 +195,7 @@ const OnlineMain = ({route}) => {
           </TouchableOpacity>
 
           <TouchableOpacity
+            style={{display: spectator && "none"}}
             onPress={() => {
               setSelecteds({
                 pozitif: null,
@@ -171,11 +203,12 @@ const OnlineMain = ({route}) => {
               });
               setMoneyQuantity(0);
             }}
+            onLongPress={handleReset}
           >
             <Icon5 name="undo-alt" size={24} color={colors.white} />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => setIsEditVisible(!isEditVisible)}>
+          <TouchableOpacity style={{display: spectator && "none"}}  onPress={() => setIsEditVisible(!isEditVisible)}>
             <Icon6
               name="pencil"
               size={24}
@@ -198,33 +231,41 @@ const OnlineMain = ({route}) => {
           <View style={styles.modalCard}>
             {/* İçerik scrollable */}
             <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
-              {history.map((e, i) => {
-                if(e.quantity == "newGamer" || e.quantity == "deleteGamer"){
-                  return (
-                    <View style={styles.modalItem} key={i}>
-                      <Text>{e.negatif}</Text>
-                      
-                      <IconIon name={e.quantity == "newGamer" ? "person-add" : "person-remove"} size={32} color={colors.darkGreen} />
+              {Array.isArray(history) &&
+                history.map((e, i) => {
+                  if (e.quantity == "newGamer" || e.quantity == "deleteGamer") {
+                    return (
+                      <View style={styles.modalItem} key={i}>
+                        <Text>{e.negatif}</Text>
 
-                      <Text>{e.pozitif}</Text>
-                    </View>
-                  )
-                }else{
-                  return (
-                    <View style={styles.modalItem} key={i}>
-                      <Text>{e.negatif}</Text>
-                      <Text>{e.quantity} ₩</Text>
-                      <Icon5
-                        name="long-arrow-alt-right"
-                        size={32}
-                        color={colors.darkGreen}
-                      />
-                      <Text>{e.pozitif}</Text>
-                    </View>
-                  )
-                }
-             
-              })}
+                        <IconIon
+                          name={
+                            e.quantity == "newGamer"
+                              ? "person-add"
+                              : "person-remove"
+                          }
+                          size={32}
+                          color={colors.darkGreen}
+                        />
+
+                        <Text>{e.pozitif}</Text>
+                      </View>
+                    );
+                  } else {
+                    return (
+                      <View style={styles.modalItem} key={i}>
+                        <Text>{e.negatif}</Text>
+                        <Text>{e.quantity} ₩</Text>
+                        <Icon5
+                          name="long-arrow-alt-right"
+                          size={32}
+                          color={colors.darkGreen}
+                        />
+                        <Text>{e.pozitif}</Text>
+                      </View>
+                    );
+                  }
+                })}
             </ScrollView>
           </View>
         </View>
@@ -232,7 +273,11 @@ const OnlineMain = ({route}) => {
 
       {/* ====== ScrollView ile içeriği kaydırılabilir hale getiriyoruz ====== */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.moneyArea}>
+      <View style={styles.moneyInputArea}>
+            <Text style={styles.h2Text}>Oda Kodu : {roomId}</Text>
+          </View>
+        <View style={[styles.moneyArea,{display: spectator && "none"}]}>
+ 
           <View style={styles.moneyInputArea}>
             <TextInput
               style={styles.input}
@@ -299,23 +344,25 @@ const OnlineMain = ({route}) => {
         )}
 
         <View style={styles.playerArea}>
-          {gamers.map((player, i) => {
-            return (
-              <PlayerListItem
-                key={i}
-                index={i}
-                name={player.name}
-                money={player.money}
-                selecteds={selecteds}
-                setSelecteds={setSelecteds}
-                gamers={gamers}
-                setGamers={setGamers}
-                isEditVisible={isEditVisible}
-                history={history}
-                setHistory={setHistory}
-              />
-            );
-          })}
+          {Array.isArray(gamers) &&
+            gamers.map((player, i) => {
+              return (
+                <PlayerListItem
+                  key={i}
+                  index={i}
+                  name={player.name}
+                  money={player.money}
+                  selecteds={selecteds}
+                  setSelecteds={setSelecteds}
+                  gamers={gamers}
+                  setGamers={setGamers}
+                  isEditVisible={isEditVisible}
+                  history={history}
+                  setHistory={setHistory}
+                  spectator={spectator}
+                />
+              );
+            })}
         </View>
       </ScrollView>
     </View>
@@ -379,7 +426,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   moneyInputArea: {
-    // backgroundColor:"white",
+    // backgroundColor:"blue",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -421,6 +468,11 @@ const styles = StyleSheet.create({
   h4Text: {
     fontSize: 25,
   },
+  h2Text:{
+    fontSize: 16,
+    fontWeight:700,
+    color:colors.black
+  },
   modalContainer: {
     backgroundColor: "rgba(0,0,0,0.5)",
     width: "100%",
@@ -440,7 +492,7 @@ const styles = StyleSheet.create({
   modalItem: {
     backgroundColor: colors.red,
     display: "flex",
-    justifyContent:"space-evenly",
+    justifyContent: "space-evenly",
     alignItems: "center",
     flexDirection: "row",
     borderRadius: 12,

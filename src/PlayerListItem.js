@@ -4,9 +4,10 @@ import Icon5 from "react-native-vector-icons/FontAwesome5";
 import Icon from "react-native-vector-icons/FontAwesome";
 import IconIon from "react-native-vector-icons/Ionicons";
 import colors from "./Colors";
-const PlayerListItem = ({ index, name, money, selecteds, setSelecteds,gamers,setGamers,isEditVisible,history,setHistory }) => {
+const PlayerListItem = ({ index, name, money, selecteds, setSelecteds,gamers,setGamers,isEditVisible,history,setHistory,spectator }) => {
 
- 
+
+
   const changePozitive = () => {
     // if(selecteds.negatif != index){
     setSelecteds({ ...selecteds, pozitif: index });
@@ -53,10 +54,10 @@ const PlayerListItem = ({ index, name, money, selecteds, setSelecteds,gamers,set
       <Text style={styles.h3Text}>{name}</Text>
       <Text style={styles.h3Text}>{money} ₩</Text>
       <View style={styles.btnsArea}>
-        <TouchableOpacity style={stylePozitive} onPress={changePozitive}>
+        <TouchableOpacity style={[stylePozitive,{display: spectator && "none"}]} onPress={changePozitive}>
           <Icon5 name="plus" size={32} color={colors.white} />
         </TouchableOpacity>
-        <TouchableOpacity style={styleNegative} onPress={changeNegative}>
+        <TouchableOpacity style={[styleNegative,{display: spectator && "none"}]} onPress={changeNegative}>
           <Icon5 name="minus" size={32} color={colors.white} />
         </TouchableOpacity>
 
