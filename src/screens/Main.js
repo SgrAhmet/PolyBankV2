@@ -7,7 +7,7 @@ import {
   TextInput,
   ScrollView,
   Modal,
-  Alert
+  Alert,
 } from "react-native";
 import Icon6 from "react-native-vector-icons/FontAwesome6";
 import Icon5 from "react-native-vector-icons/FontAwesome5";
@@ -15,7 +15,7 @@ import IconIon from "react-native-vector-icons/Ionicons";
 import colors from "../Colors";
 import PlayerListItem from "../PlayerListItem";
 import { Audio } from "expo-av";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 // import x from "../"
 
 const Main = () => {
@@ -25,7 +25,7 @@ const Main = () => {
     pozitif: null,
     negatif: null,
   });
-  const [moneyQuantity, setMoneyQuantity] = useState(0);
+  const [moneyQuantity, setMoneyQuantity] = useState("");
   const [gamers, setGamers] = useState([
     {
       name: "Banka",
@@ -35,20 +35,14 @@ const Main = () => {
 
   const [history, setHistory] = useState([]);
 
+  const [moneybills, setMoneybills] = useState([]);
+
   const [modalVisible, setModalVisible] = useState(false);
 
-
-  const setAsyncItem= async () => {
+  const setAsyncItem = async () => {
     try {
-      await AsyncStorage.setItem(
-        'offlineGamers',
-        JSON.stringify(gamers),
-      );
-      await AsyncStorage.setItem(
-        'offlineHistory',
-        JSON.stringify(history),
-      );
-      console.warn("AsyncStorage Setted")
+      await AsyncStorage.setItem("offlineGamers", JSON.stringify(gamers));
+      await AsyncStorage.setItem("offlineHistory", JSON.stringify(history));
     } catch (error) {
       // Error saving data
     }
@@ -56,14 +50,19 @@ const Main = () => {
 
   const getAsyncItem = async () => {
     try {
-      const offlineGamers = await AsyncStorage.getItem('offlineGamers');
-      const offlineHistory = await AsyncStorage.getItem('offlineHistory');
-      if (offlineGamers !== null && offlineHistory !== null) {
-        // We have data!!
-        // console.log(JSON.parse(offlineGamers));
-        // console.log(JSON.parse(offlineHistory));
-        setGamers(JSON.parse(offlineGamers))
-        setHistory(JSON.parse(offlineHistory))
+      const offlineGamers = await AsyncStorage.getItem("offlineGamers");
+      const offlineHistory = await AsyncStorage.getItem("offlineHistory");
+      const offlineMoneyBills = await AsyncStorage.getItem("offlineMoneyBills");
+
+      if (offlineGamers != null && offlineHistory != null) {
+        setGamers(JSON.parse(offlineGamers));
+        setHistory(JSON.parse(offlineHistory));
+      }
+
+      if (offlineMoneyBills != null) {
+        setMoneybills(JSON.parse(offlineMoneyBills));
+      } else {
+        setMoneybills([10, 20, 50, 100, 200, 500, 1000, 5000]);
       }
     } catch (error) {
       // Error retrieving data
@@ -72,9 +71,8 @@ const Main = () => {
   };
 
   useEffect(() => {
-    getAsyncItem()
-  }, [])
-  
+    getAsyncItem();
+  }, []);
 
   // const consoleAsyncStorage =async()=>{
 
@@ -90,23 +88,18 @@ const Main = () => {
   // }
 
   useEffect(() => {
-      setAsyncItem()
-      // consoleAsyncStorage()
+    setAsyncItem();
+    // consoleAsyncStorage()
+  }, [gamers, history]);
 
-  }, [gamers,history])
-  
   const addNewGamer = () => {
-
-    if(newGamerName.trim() != ""){
-
+    if (newGamerName.trim() != "") {
       setGamers([...gamers, { name: newGamerName, money: 0 }]);
       setHistory([
-        
         { pozitif: newGamerName, negatif: "Banka", quantity: "newGamer" },
-        ...history
+        ...history,
       ]);
       setNewGamerName("");
-
     }
 
     // setAsyncItem()
@@ -127,6 +120,9 @@ const Main = () => {
   };
 
   const transferMoney = () => {
+    
+    const amount = Number(moneyQuantity);
+
     if (moneyQuantity > 0 && selecteds.pozitif != selecteds.negatif) {
       if (selecteds.pozitif != null && selecteds.negatif != null) {
         const updatedGamers = gamers.map((player, index) => {
@@ -152,7 +148,7 @@ const Main = () => {
         });
 
         setGamers(updatedGamers);
-        setMoneyQuantity(0); // Para miktarını sıfırla
+        setMoneyQuantity(""); // Para miktarını sıfırla
 
         playSound();
       }
@@ -161,23 +157,20 @@ const Main = () => {
         negatif: gamers[selecteds.negatif].name,
         quantity: moneyQuantity,
       };
-      setHistory([ historyItem,...history,]);
+      setHistory([historyItem, ...history]);
 
       // setAsyncItem()
     } else {
       // console.log("Error");
     }
-
-
   };
 
   const handleHistory = () => {
-    
     setModalVisible(true);
     // getAsyncItem()
   };
 
-  const resetGame =()=>{
+  const resetGame = () => {
     // console.log("Game Reset");
 
     setGamers([
@@ -185,19 +178,57 @@ const Main = () => {
         name: "Banka",
         money: "∞",
       },
-    ])
-    setHistory([])
-  }
-  const handleReset =()=>{
-    Alert.alert("Oyunu Sıfırlamak","Oyunu Sıfırlamak İstediğinizden Emin Misiniz ?",[
-      {
-        text: 'Hayır',
-        // onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
-      },
-      {text: 'Evet', onPress: resetGame},
-    ])
-  }
+    ]);
+    setHistory([]);
+    setMoneybills([10, 20, 50, 100, 200, 500, 1000, 5000]);
+  };
+  const handleReset = () => {
+    Alert.alert(
+      "Oyunu Sıfırlamak",
+      "Oyunu Sıfırlamak İstediğinizden Emin Misiniz ?",
+      [
+        {
+          text: "Hayır",
+          // onPress: () => console.log('Cancel Pressed'),
+          style: "cancel",
+        },
+        { text: "Evet", onPress: resetGame },
+      ]
+    );
+  };
+
+  useEffect(() => {
+    if (moneybills.length > 0) {
+      setAsyncMoneyBills();
+    }
+  }, [moneybills]);
+
+  const setAsyncMoneyBills = async () => {
+    try {
+      await AsyncStorage.setItem(
+        "offlineMoneyBills",
+        JSON.stringify(moneybills)
+      );
+      // console.log("offlineMoneyBills Değişti")
+      // console.log(moneybills);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleLongMoneyBill = (e) => {
+    // console.log(moneyQuantity.trim() == "");
+    console.log(typeof moneyQuantity);
+
+    if (typeof moneyQuantity == "number") {
+      console.log(moneyQuantity);
+    }
+
+    // let newMoneyBills = [...moneybills];
+    // newMoneyBills[moneybills.indexOf(e)] = 1212;
+    // setMoneybills(newMoneyBills);
+  };
+
   return (
     <View style={styles.container}>
       {/* ====== Banner ====== */}
@@ -214,7 +245,7 @@ const Main = () => {
                 pozitif: null,
                 negatif: null,
               });
-              setMoneyQuantity(0);
+              setMoneyQuantity("");
             }}
             onLongPress={handleReset}
           >
@@ -245,17 +276,25 @@ const Main = () => {
             {/* İçerik scrollable */}
             <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
               {history.map((e, i) => {
-                if(e.quantity == "newGamer" || e.quantity == "deleteGamer"){
+                if (e.quantity == "newGamer" || e.quantity == "deleteGamer") {
                   return (
                     <View style={styles.modalItem} key={i}>
                       <Text>{e.negatif}</Text>
-                      
-                      <IconIon name={e.quantity == "newGamer" ? "person-add" : "person-remove"} size={32} color={colors.darkGreen} />
+
+                      <IconIon
+                        name={
+                          e.quantity == "newGamer"
+                            ? "person-add"
+                            : "person-remove"
+                        }
+                        size={32}
+                        color={colors.darkGreen}
+                      />
 
                       <Text>{e.pozitif}</Text>
                     </View>
-                  )
-                }else{
+                  );
+                } else {
                   return (
                     <View style={styles.modalItem} key={i}>
                       <Text>{e.negatif}</Text>
@@ -267,9 +306,8 @@ const Main = () => {
                       />
                       <Text>{e.pozitif}</Text>
                     </View>
-                  )
+                  );
                 }
-             
               })}
             </ScrollView>
           </View>
@@ -282,10 +320,19 @@ const Main = () => {
           <View style={styles.moneyInputArea}>
             <TextInput
               style={styles.input}
-              keyboardType="numeric"
+              // keyboardType="numeric"
               placeholder="Para Miktarını Gir..."
               value={moneyQuantity.toString()}
-              onChangeText={(text) => setMoneyQuantity(Number(text))}
+              onChangeText={(text) => {
+                // Virgülü noktaya çevir ama silme!
+                const fixedText = text.replace(",", ".");
+                // Sadece rakam ve tek bir nokta içersin
+                const valid = fixedText.match(/^(\d+(\.\d*)?)?$/);
+                if (valid || fixedText === "") {
+                  setMoneyQuantity(fixedText);
+                }
+              }}
+              keyboardType="decimal-pad"
             />
             <TouchableOpacity onPress={transferMoney}>
               <Icon6
@@ -298,12 +345,13 @@ const Main = () => {
 
           <View style={styles.moneyBillArea}>
             <View style={styles.moneyBillRow}>
-              {[10, 20, 50, 100].map((e) => {
+              {moneybills?.slice(0, 4).map((e) => {
                 return (
                   <TouchableOpacity
-                    key={e}
+                    key={Math.ceil(Math.random() * 100000)}
                     style={styles.moneyBill}
                     onPress={() => handleMoneyBill(e)}
+                    onLongPress={() => handleLongMoneyBill(e)}
                   >
                     <Text style={styles.h4Text}>{e}</Text>
                   </TouchableOpacity>
@@ -312,12 +360,13 @@ const Main = () => {
             </View>
 
             <View style={styles.moneyBillRow}>
-              {[200, 500, 1000, 5000].map((e) => {
+              {moneybills.slice(4, 8).map((e) => {
                 return (
                   <TouchableOpacity
-                    key={e}
+                    key={Math.ceil(Math.random() * 100000)}
                     style={styles.moneyBill}
                     onPress={() => handleMoneyBill(e)}
+                    onLongPress={() => handleLongMoneyBill(e)}
                   >
                     <Text style={styles.h4Text}>{e}</Text>
                   </TouchableOpacity>
@@ -486,7 +535,7 @@ const styles = StyleSheet.create({
   modalItem: {
     backgroundColor: colors.red,
     display: "flex",
-    justifyContent:"space-evenly",
+    justifyContent: "space-evenly",
     alignItems: "center",
     flexDirection: "row",
     borderRadius: 12,
