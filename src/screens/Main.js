@@ -121,8 +121,6 @@ const Main = () => {
 
   const transferMoney = () => {
     
-    const amount = Number(moneyQuantity);
-
     if (moneyQuantity > 0 && selecteds.pozitif != selecteds.negatif) {
       if (selecteds.pozitif != null && selecteds.negatif != null) {
         const updatedGamers = gamers.map((player, index) => {
@@ -133,14 +131,14 @@ const Main = () => {
           if (index === selecteds.pozitif) {
             return {
               ...player,
-              money: player.money + moneyQuantity, // Pozitif oyuncunun parasını artır
+              money: Number(player.money) + moneyQuantity, // Pozitif oyuncunun parasını artır
             };
           }
 
           if (index === selecteds.negatif) {
             return {
               ...player,
-              money: player.money - moneyQuantity, // Negatif oyuncunun parasını azalt
+              money: Number(player.money) - moneyQuantity, // Negatif oyuncunun parasını azalt
             };
           }
 
@@ -217,17 +215,20 @@ const Main = () => {
   };
 
   const handleLongMoneyBill = (e) => {
-    // console.log(moneyQuantity.trim() == "");
-    console.log(typeof moneyQuantity);
 
-    if (typeof moneyQuantity == "number") {
-      console.log(moneyQuantity);
+
+
+    if(moneyQuantity != ""){
+
+    console.log(moneyQuantity);
+    let newMoneyBills = [...moneybills];
+    newMoneyBills[moneybills.indexOf(e)] = Number(moneyQuantity);
+    setMoneybills(newMoneyBills);
     }
 
-    // let newMoneyBills = [...moneybills];
-    // newMoneyBills[moneybills.indexOf(e)] = 1212;
-    // setMoneybills(newMoneyBills);
+
   };
+
 
   return (
     <View style={styles.container}>

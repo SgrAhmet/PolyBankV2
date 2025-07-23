@@ -57,6 +57,9 @@ const OnlineEnterence = ({ navigation }) => {
   };
 
   const createRoom = async () => {
+
+    // console.log(asyncRoomId);
+
     if (!asyncRoomId) {
       let roomId;
       let roomRef;
@@ -94,6 +97,9 @@ const OnlineEnterence = ({ navigation }) => {
         spectator: false,
       });
     }
+
+
+
   };
 
   const EnterRoom = async () => {
