@@ -1,11 +1,18 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, Image,Linking } from "react-native";
 import colors from "../Colors";
 import Icon5 from "react-native-vector-icons/FontAwesome5";
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Enterence = ({ navigation }) => {
   // AsyncStorage.clear()
+
+  const githubLink = "https://github.com/SgrAhmet"
+  const linkedinLink = "https://www.linkedin.com/in/ahmet-aydos/"
+  
+  const openLink =(link)=>{
+    Linking.openURL(link)
+  }
 
   return (
     <View style={styles.container}>
@@ -30,6 +37,19 @@ const Enterence = ({ navigation }) => {
         <Icon5 name="gamepad" size={24} color={colors.brown} />
 
       </TouchableOpacity>
+
+
+      <View style={styles.footer}>
+
+        <TouchableOpacity onPress={()=>openLink(linkedinLink)}>
+        <Icon5 name="linkedin" size={40} color={colors.brown} />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={()=>openLink(githubLink)}>
+        <Icon5 name="github" size={40} color={colors.brown} />
+        </TouchableOpacity>
+
+      </View>
     </View>
   );
 };
@@ -70,6 +90,18 @@ const styles = StyleSheet.create({
     fontFamily: "monospace",
     marginBottom: 50,
   },
+  footer:{
+    // backgroundColor:"red",
+    width:"100%",
+    height:"10%",
+    position:"absolute",
+    bottom:20,
+    display:"flex",
+    flexDirection:"row",
+    alignItems:"center",
+    justifyContent:"center",
+    gap:50
+  }
 });
 
 export default Enterence;

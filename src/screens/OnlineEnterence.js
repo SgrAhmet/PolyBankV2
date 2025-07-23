@@ -45,7 +45,6 @@ const OnlineEnterence = ({ navigation }) => {
       await AsyncStorage.setItem("asyncRoomId", newRoomId);
 
       console.log("AsyncStorage newRoomId added");
-
     } catch (error) {
       console.warn(error);
     }
@@ -60,7 +59,6 @@ const OnlineEnterence = ({ navigation }) => {
   };
 
   const createRoom = async () => {
-
     // console.log(asyncRoomId);
 
     if (!asyncRoomId) {
@@ -91,7 +89,7 @@ const OnlineEnterence = ({ navigation }) => {
       setTest("Oda: " + roomId);
 
       setAsyncRoomIdFunc(roomId);
-      setAsyncRoomId(roomId)
+      setAsyncRoomId(roomId);
       navigation.navigate("OnlineMain", { roomId: roomId });
     } else {
       // console.log("varsa");
@@ -100,9 +98,6 @@ const OnlineEnterence = ({ navigation }) => {
         spectator: false,
       });
     }
-
-
-
   };
 
   const EnterRoom = async () => {
@@ -117,7 +112,6 @@ const OnlineEnterence = ({ navigation }) => {
         "Lütfen geçerli bir oda numarası yazınınz"
       );
     } else {
-
       // console.log("jglkdfjhgkdnghkjfkjnk");
       try {
         let exists = true;
@@ -127,21 +121,21 @@ const OnlineEnterence = ({ navigation }) => {
         console.log("Oda ID:", inputRoomId, "| Var mı?", exists); // Bu satırı ekle
 
         if (exists) {
-        navigation.navigate("OnlineMain" , {roomId : inputRoomId,spectator:true})
-        setInputRoomId("")
+          navigation.navigate("OnlineMain", {
+            roomId: inputRoomId,
+            spectator: true,
+          });
+          setInputRoomId("");
         } else {
           Alert.alert(
             "Oda Numarası Bulunamadı",
             "Lütfen geçerli bir oda numarası yazınınz"
           );
         }
-
       } catch (error) {
         console.log(error);
       }
-
     }
-
   };
 
   // useEffect(() => {
@@ -150,15 +144,36 @@ const OnlineEnterence = ({ navigation }) => {
 
   // }, [inputRoomId])
 
+  console.log("asyncRoomId is " + asyncRoomId);
   return (
     <View style={styles.container}>
-      <Text>OnlineEnterence - {test} </Text>
-      <Text>RoomID - {asyncRoomId} </Text>
-      <TouchableOpacity style={styles.button} onPress={() => createRoom()}>
-        <Text>Create Room</Text>
+      {/* <Text>OnlineEnterence - {test} </Text> */}
+      <Text style={styles.h1Text}>Your Room ID : {asyncRoomId == undefined ? "Not Created Yet" : asyncRoomId } </Text>
+
+      <TouchableOpacity
+        style={[styles.button, { backgroundColor: colors.darkGreen }]}
+        onPress={() => createRoom()}
+      >
+        <Text style={[styles.btnText, { color: colors.brown }]}>
+          Create Room
+        </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => EnterRoom()}>
-        <Text>Enter a Room</Text>
+      <TouchableOpacity
+        style={[
+          styles.button,
+          {
+            backgroundColor: colors.brown,
+            borderTopRightRadius:20,
+            borderTopLeftRadius:20,
+            borderBottomLeftRadius: 0,
+            borderBottomRightRadius: 0,
+          },
+        ]}
+        onPress={() => EnterRoom()}
+      >
+        <Text style={[styles.btnText, { color: colors.darkGreen }]}>
+          Enter Room
+        </Text>
       </TouchableOpacity>
 
       <TextInput
@@ -166,6 +181,7 @@ const OnlineEnterence = ({ navigation }) => {
         placeholder="Enter Room ID"
         keyboardType="numeric"
         value={inputRoomId}
+        placeholderTextColor= {colors.lightBrown}
         onChangeText={(text) => setInputRoomId(text)}
       />
     </View>
@@ -175,24 +191,48 @@ const OnlineEnterence = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.darkGreen,
     alignItems: "center",
     justifyContent: "center",
     gap: 5,
   },
   button: {
     backgroundColor: colors.brown,
-    padding: 10,
-    borderRadius: 10,
-    margin: 10,
+    padding: 15,
+    borderRadius: 30,
+    marginTop: 10,
+    width: "80%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: colors.brown,
+    flexDirection: "row",
+    borderWidth: 1,
+    gap: 20,
+  },
+  btnText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    fontFamily: "monospace",
+    // color:"red"
   },
   textInput: {
-    width: "40%",
-    margin: 12,
+    width: "80%",
+    color:colors.brown,
+    borderColor: colors.brown,
     borderWidth: 1,
     padding: 10,
-    borderRadius: 10,
     fontSize: 20,
+    textAlign:"center",
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
+  },
+  h1Text: {
+    fontSize: 20,
+    color: colors.white,
+    fontWeight: "900",
+    fontFamily: "monospace",
+    // marginBottom: 50,
   },
 });
 
