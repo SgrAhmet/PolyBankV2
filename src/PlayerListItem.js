@@ -64,7 +64,7 @@ const PlayerListItem = ({ index, name, money, selecteds, setSelecteds,gamers,set
         
       </View>
       <TouchableOpacity style={name != "Banka" ? styleDelete : {display : "none"}} onPress={deleteGamer}>
-          <Icon5 name="ban" size={32} color={"red"} />
+          <Icon5 name="ban" size={32} color={colors.lightRed} />
         </TouchableOpacity>
     </View>
   );
@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
   h3Text: {
     fontSize: 20,
     fontWeight: 400,
+    fontFamily:"monospace"
   },
   btnsArea: {
     width: "30%",

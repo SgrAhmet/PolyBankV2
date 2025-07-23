@@ -229,7 +229,7 @@ const Main = () => {
     <View style={styles.container}>
       {/* ====== Banner ====== */}
       <View style={styles.banner}>
-        <Text style={styles.h1Text}>PolyBank V2</Text>
+        <Text style={styles.h1Text}>PolyBank</Text>
         <View style={styles.bannerBtnArea}>
           <TouchableOpacity onPress={() => handleHistory()}>
             <Icon5 name="history" size={26} color={colors.white} />
@@ -317,7 +317,8 @@ const Main = () => {
             <TextInput
               style={styles.input}
               // keyboardType="numeric"
-              placeholder="Para Miktarını Gir..."
+              placeholder="Para Miktarı Gir"
+              placeholderTextColor={colors.lightBrown}
               value={moneyQuantity.toString()}
               onChangeText={(text) => {
                 // Virgülü noktaya çevir ama silme!
@@ -334,7 +335,7 @@ const Main = () => {
               <Icon6
                 name="money-bill-transfer"
                 size={32}
-                color={colors.darkGreen}
+                color={colors.white}
               />
             </TouchableOpacity>
           </View>
@@ -408,9 +409,10 @@ const Main = () => {
               value={newGamerName}
               onChangeText={(text) => setNewGamerName(text)}
               placeholder="İsim gir..."
+              placeholderTextColor={colors.lightBrown}
             />
             <TouchableOpacity onPress={addNewGamer}>
-              <Icon5 name="user-plus" size={32} color={colors.darkGreen} />
+              <Icon5 name="user-plus" size={32} color={colors.white} />
             </TouchableOpacity>
           </View>
         )}
@@ -442,7 +444,7 @@ const Main = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.darkGreen,
     width: "100%",
     gap: 5,
   },
@@ -460,6 +462,8 @@ const styles = StyleSheet.create({
     paddingTop: 35,
     paddingLeft: 30,
     paddingRight: 30,
+    borderBottomWidth:2,
+    borderBottomColor:colors.white
   },
   bannerBtnArea: {
     flexDirection: "row",
@@ -470,6 +474,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     color: colors.white,
     fontWeight: "900",
+    fontFamily:"monospace",
   },
   playerArea: {
     // backgroundColor: "blue",
@@ -479,7 +484,7 @@ const styles = StyleSheet.create({
   editArea: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "space-evenly",
     zIndex: 999,
   },
   input: {
@@ -489,6 +494,9 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     fontSize: 20,
+    color:colors.white,
+    borderColor:colors.brown,
+    fontFamily:"monospace",
   },
   moneyArea: {
     // backgroundColor: "red",
@@ -514,6 +522,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    // marginBottom:10
   },
   moneyBill: {
     backgroundColor: colors.lightGreen,
@@ -525,15 +534,17 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.36,
-    shadowRadius: 6.68,
+    // shadowColor: "#000",
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 5,
+    // },
+    // shadowOpacity: 0.36,
+    // shadowRadius: 6.68,
 
-    elevation: 11,
+    // elevation: 11,
+    borderColor:colors.lightGreen,
+    borderWidth:2,
     overflow: "hidden",
   },
   moneyCircle: {
@@ -544,7 +555,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   h4Text: {
-    fontSize: 25,
+    fontSize: 22,
   },
   modalContainer: {
     backgroundColor: "rgba(0,0,0,0.5)",
@@ -556,14 +567,15 @@ const styles = StyleSheet.create({
     paddingBottom: 20, // Kaydırma sorunu olmaması için ekstra boşluk bırak
   },
   modalCard: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.darkGreen,
     width: "90%",
-    maxHeight: "80%",
+    // maxHeight: "80%",
+    height:"80%",
     borderRadius: 20,
     padding: 20,
   },
   modalItem: {
-    backgroundColor: colors.red,
+    backgroundColor: colors.brown,
     display: "flex",
     justifyContent: "space-evenly",
     alignItems: "center",

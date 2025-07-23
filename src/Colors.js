@@ -7,7 +7,9 @@ const colors = {
     // lightGreen : "#76b88b",
     darkGreen : "#2C3930",
     black : "#292825",
-    red: "#de685b"
+    red: "#de685b",
+    lightRed:"#f03824"
+    // lightRed:"red"
 }
 
 export default colors

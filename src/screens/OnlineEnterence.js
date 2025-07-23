@@ -180,6 +180,7 @@ const OnlineEnterence = ({ navigation }) => {
         style={styles.textInput}
         placeholder="Enter Room ID"
         keyboardType="numeric"
+        caretHidden={true}
         value={inputRoomId}
         placeholderTextColor= {colors.lightBrown}
         onChangeText={(text) => setInputRoomId(text)}

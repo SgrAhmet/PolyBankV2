@@ -241,7 +241,7 @@ const OnlineMain = ({ route }) => {
     <View style={styles.container}>
       {/* ====== Banner ====== */}
       <View style={styles.banner}>
-        <Text style={styles.h1Text}>PolyBank V2</Text>
+        <Text style={styles.h1Text}>PolyBank</Text>
         <View style={styles.bannerBtnArea}>
           <TouchableOpacity onPress={() => handleHistory()}>
             <Icon5 name="history" size={26} color={colors.white} />
@@ -337,7 +337,9 @@ const OnlineMain = ({ route }) => {
             <TextInput
               style={styles.input}
               // keyboardType="numeric"
-              placeholder="Para Miktarını Gir..."
+              placeholder="Para Miktarı Gir"
+              caretHidden={true}
+              placeholderTextColor={colors.lightBrown}
               value={moneyQuantity.toString()}
               onChangeText={(text) => {
                 // Virgülü noktaya çevir ama silme!
@@ -354,7 +356,7 @@ const OnlineMain = ({ route }) => {
               <Icon6
                 name="money-bill-transfer"
                 size={32}
-                color={colors.darkGreen}
+                color={colors.white}
               />
             </TouchableOpacity>
           </View>
@@ -425,14 +427,15 @@ const OnlineMain = ({ route }) => {
               style={styles.input}
               value={newGamerName}
               onChangeText={(text) => setNewGamerName(text)}
-              placeholder="İsim gir..."
+              placeholder="İsim Gir"
+              placeholderTextColor={colors.lightBrown}
             />
             <TouchableOpacity onPress={addNewGamer}>
-              <Icon5 name="user-plus" size={32} color={colors.darkGreen} />
+              <Icon5 name="user-plus" size={32} color={colors.white} />
             </TouchableOpacity>
           </View>
         )}
-
+        
         <View style={styles.playerArea}>
           {Array.isArray(gamers) &&
             gamers.map((player, i) => {
@@ -462,7 +465,7 @@ const OnlineMain = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.darkGreen,
     width: "100%",
     gap: 5,
   },
@@ -480,6 +483,8 @@ const styles = StyleSheet.create({
     paddingTop: 35,
     paddingLeft: 30,
     paddingRight: 30,
+    borderBottomWidth:2,
+    borderBottomColor:colors.white
   },
   bannerBtnArea: {
     flexDirection: "row",
@@ -490,6 +495,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     color: colors.white,
     fontWeight: "900",
+    fontFamily:"monospace"
   },
   playerArea: {
     // backgroundColor: "blue",
@@ -499,7 +505,7 @@ const styles = StyleSheet.create({
   editArea: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "space-evenly",
     zIndex: 999,
   },
   input: {
@@ -509,6 +515,9 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     fontSize: 20,
+    color:colors.white,
+    borderColor:colors.brown,
+    fontFamily:"monospace"
   },
   moneyArea: {
     // backgroundColor: "red",
@@ -516,7 +525,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   moneyInputArea: {
-    // backgroundColor:"blue",
+    // backgroundColor:"white",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -534,6 +543,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    // marginBottom:10
   },
   moneyBill: {
     backgroundColor: colors.lightGreen,
@@ -545,17 +555,18 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.36,
-    shadowRadius: 6.68,
+    // shadowColor: "#000",
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 5,
+    // },
+    // shadowOpacity: 0.36,
+    // shadowRadius: 6.68,
 
-    elevation: 11,
+    // elevation: 11,
+    borderColor:colors.lightGreen,
+    borderWidth:2,
     overflow: "hidden",
-
   },
   moneyCircle: {
     backgroundColor: colors.darkGreen,
@@ -565,12 +576,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   h4Text: {
-    fontSize: 25,
-  },
-  h2Text: {
-    fontSize: 16,
-    fontWeight: 700,
-    color: colors.black,
+    fontSize: 22,
   },
   modalContainer: {
     backgroundColor: "rgba(0,0,0,0.5)",
@@ -582,14 +588,15 @@ const styles = StyleSheet.create({
     paddingBottom: 20, // Kaydırma sorunu olmaması için ekstra boşluk bırak
   },
   modalCard: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.darkGreen,
     width: "90%",
-    maxHeight: "80%",
+    // maxHeight: "80%",
+    height:"80%",
     borderRadius: 20,
     padding: 20,
   },
   modalItem: {
-    backgroundColor: colors.red,
+    backgroundColor: colors.brown,
     display: "flex",
     justifyContent: "space-evenly",
     alignItems: "center",
@@ -599,6 +606,153 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 16,
   },
+  h2Text:{
+    fontSize:20,
+    fontFamily:"monospace",
+    color:colors.white
+  }
 });
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: colors.white,
+//     width: "100%",
+//     gap: 5,
+//   },
+//   scrollContainer: {
+//     // backgroundColor:"red",
+//     paddingBottom: 20, // Kaydırma sorunu olmaması için ekstra boşluk bırak
+//   },
+//   banner: {
+//     backgroundColor: colors.darkGreen,
+//     width: "100%",
+//     height: "12%",
+//     flexDirection: "row",
+//     alignItems: "center",
+//     justifyContent: "space-between",
+//     paddingTop: 35,
+//     paddingLeft: 30,
+//     paddingRight: 30,
+//   },
+//   bannerBtnArea: {
+//     flexDirection: "row",
+//     alignItems: "center",
+//     gap: 30,
+//   },
+//   h1Text: {
+//     fontSize: 28,
+//     color: colors.white,
+//     fontWeight: "900",
+//   },
+//   playerArea: {
+//     // backgroundColor: "blue",
+//     flexDirection: "column",
+//     gap: 10,
+//   },
+//   editArea: {
+//     flexDirection: "row",
+//     alignItems: "center",
+//     justifyContent: "space-around",
+//     zIndex: 999,
+//   },
+//   input: {
+//     width: "60%",
+//     margin: 12,
+//     borderWidth: 1,
+//     padding: 10,
+//     borderRadius: 10,
+//     fontSize: 20,
+//   },
+//   moneyArea: {
+//     // backgroundColor: "red",
+//     height: 200,
+//     width: "100%",
+//   },
+//   moneyInputArea: {
+//     // backgroundColor:"blue",
+//     display: "flex",
+//     flexDirection: "row",
+//     alignItems: "center",
+//     justifyContent: "space-evenly",
+//   },
+//   moneyBillArea: {
+//     // backgroundColor: "red",
+//     padding: 10,
+//     height: "60%",
+//     display: "flex",
+//   },
+//   moneyBillRow: {
+//     // backgroundColor:"green",
+//     display: "flex",
+//     flexDirection: "row",
+//     alignItems: "center",
+//     justifyContent: "space-between",
+//   },
+//   moneyBill: {
+//     backgroundColor: colors.lightGreen,
+//     // padding: 10,
+//     // paddingHorizontal: 20,
+//     width: "23%",
+//     height: "85%",
+//     borderRadius: 7,
+//     display: "flex",
+//     alignItems: "center",
+//     justifyContent: "center",
+//     shadowColor: "#000",
+//     shadowOffset: {
+//       width: 0,
+//       height: 5,
+//     },
+//     shadowOpacity: 0.36,
+//     shadowRadius: 6.68,
+
+//     elevation: 11,
+//     overflow: "hidden",
+
+//   },
+//   moneyCircle: {
+//     backgroundColor: colors.darkGreen,
+//     width: 25,
+//     height: 25,
+//     borderRadius: 20,
+//     position: "absolute",
+//   },
+//   h4Text: {
+//     fontSize: 22,
+//   },
+//   h2Text: {
+//     fontSize: 16,
+//     fontWeight: 700,
+//     color: colors.black,
+//   },
+//   modalContainer: {
+//     backgroundColor: "rgba(0,0,0,0.5)",
+//     width: "100%",
+//     height: "100%",
+//     display: "flex",
+//     alignItems: "center",
+//     justifyContent: "center",
+//     paddingBottom: 20, // Kaydırma sorunu olmaması için ekstra boşluk bırak
+//   },
+//   modalCard: {
+//     backgroundColor: colors.white,
+//     width: "90%",
+//     maxHeight: "80%",
+//     borderRadius: 20,
+//     padding: 20,
+//   },
+//   modalItem: {
+//     backgroundColor: colors.red,
+//     display: "flex",
+//     justifyContent: "space-evenly",
+//     alignItems: "center",
+//     flexDirection: "row",
+//     borderRadius: 12,
+//     gap: 20,
+//     padding: 10,
+//     marginBottom: 16,
+//   },
+// });
 
 export default OnlineMain;
