@@ -68,7 +68,7 @@ const PlayerListItem = ({ index, name, money, selecteds, setSelecteds,gamers,set
 
         
       </View>
-      <TouchableOpacity style={name != "Banka" ? styleDelete : {display : "none"}} onPress={deleteGamer}>
+      <TouchableOpacity style={index != 0 ? styleDelete : {display : "none"}} onPress={deleteGamer}>
           <Icon5 name="ban" size={32} color={colors.lightRed} />
         </TouchableOpacity>
     </View>

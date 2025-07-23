@@ -1,7 +1,7 @@
 
 
 export const strings = {
-  en: {
+  us: {
     online: "ONLINE",
     offline: "OFFLINE",
     invalidRoomId: "Invalid Room ID",

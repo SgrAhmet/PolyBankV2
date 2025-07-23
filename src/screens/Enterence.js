@@ -21,7 +21,7 @@ const Enterence = ({ navigation }) => {
   const changeLang =()=>{
     if(lang == "tr"){
       setLang("us")
-      setLanguage("en")
+      setLanguage("us")
     }else{
       setLang("tr")
       setLanguage("tr")
