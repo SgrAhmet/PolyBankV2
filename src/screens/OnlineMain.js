@@ -7,7 +7,7 @@ import {
   TextInput,
   ScrollView,
   Modal,
-  Alert
+  Alert,
 } from "react-native";
 import Icon6 from "react-native-vector-icons/FontAwesome6";
 import Icon5 from "react-native-vector-icons/FontAwesome5";
@@ -26,10 +26,11 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import { db } from "../../firestore"; // Firebase yapılandırma dosyanızın yolu
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // import x from "../"
 const OnlineMain = ({ route }) => {
-  const { roomId,spectator } = route.params;
+  const { roomId, spectator } = route.params;
   // console.log(spectator)
   // console.log("roomId is " + roomId);
 
@@ -39,10 +40,12 @@ const OnlineMain = ({ route }) => {
     pozitif: null,
     negatif: null,
   });
-  const [moneyQuantity, setMoneyQuantity] = useState(0);
+  const [moneyQuantity, setMoneyQuantity] = useState("");
   const [gamers, setGamers] = useState([]);
 
   const [history, setHistory] = useState([]);
+
+  const [moneybills, setMoneybills] = useState([]);
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -50,7 +53,7 @@ const OnlineMain = ({ route }) => {
 
   useEffect(() => {
     // Belirli bir document'i (roomID'ye göre) dinlemek için onSnapshot kullanıyoruz
-    const docRef = doc(db, "deneme", roomId);
+    const docRef = doc(db, "rooms", roomId);
 
     const unsubscribe = onSnapshot(docRef, (docSnap) => {
       if (docSnap.exists()) {
@@ -73,7 +76,7 @@ const OnlineMain = ({ route }) => {
 
   const updateDocument = async () => {
     try {
-      const orderDocRef = doc(db, "deneme", roomId);
+      const orderDocRef = doc(db, "rooms", roomId);
       await updateDoc(orderDocRef, { gamers, history });
       // await updateDoc(orderDocRef, { history });
     } catch (error) {
@@ -125,14 +128,14 @@ const OnlineMain = ({ route }) => {
           if (index === selecteds.pozitif) {
             return {
               ...player,
-              money: player.money + moneyQuantity, // Pozitif oyuncunun parasını artır
+              money: Number(player.money) + Number(moneyQuantity), // Pozitif oyuncunun parasını artır
             };
           }
 
           if (index === selecteds.negatif) {
             return {
               ...player,
-              money: player.money - moneyQuantity, // Negatif oyuncunun parasını azalt
+              money: Number(player.money) - Number(moneyQuantity), // Negatif oyuncunun parasını azalt
             };
           }
 
@@ -140,7 +143,7 @@ const OnlineMain = ({ route }) => {
         });
 
         setGamers(updatedGamers);
-        setMoneyQuantity(0); // Para miktarını sıfırla
+        setMoneyQuantity(""); // Para miktarını sıfırla
         playSound();
       }
       let historyItem = {
@@ -159,10 +162,7 @@ const OnlineMain = ({ route }) => {
     // console.log(history);
   };
 
-
-
-
-  const resetGame =()=>{
+  const resetGame = () => {
     // console.log("Game Reset");
 
     setGamers([
@@ -170,19 +170,72 @@ const OnlineMain = ({ route }) => {
         name: "Banka",
         money: "∞",
       },
-    ])
-    setHistory([])
-  }
-  const handleReset =()=>{
-    Alert.alert("Oyunu Sıfırlamak","Oyunu Sıfırlamak İstediğinizden Emin Misiniz ?",[
-      {
-        text: 'Hayır',
-        // onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
-      },
-      {text: 'Evet', onPress: resetGame},
-    ])
-  }
+    ]);
+    setHistory([]);
+    setMoneybills([10, 20, 50, 100, 200, 500, 1000, 5000]);
+  };
+  const handleReset = () => {
+    Alert.alert(
+      "Oyunu Sıfırlamak",
+      "Oyunu Sıfırlamak İstediğinizden Emin Misiniz ?",
+      [
+        {
+          text: "Hayır",
+          // onPress: () => console.log('Cancel Pressed'),
+          style: "cancel",
+        },
+        { text: "Evet", onPress: resetGame },
+      ]
+    );
+  };
+
+  useEffect(() => {
+    getAsyncItem();
+  }, []);
+
+  const getAsyncItem = async () => {
+    try {
+      const offlineMoneyBills = await AsyncStorage.getItem("offlineMoneyBills");
+      if (offlineMoneyBills != null) {
+        setMoneybills(JSON.parse(offlineMoneyBills));
+      } else {
+        setMoneybills([10, 20, 50, 100, 200, 500, 1000, 5000]);
+      }
+    } catch (error) {
+      console.log("Erorrrrs");
+    }
+  };
+
+  useEffect(() => {
+    if (moneybills.length > 0) {
+      setAsyncMoneyBills();
+    }
+  }, [moneybills]);
+
+  const setAsyncMoneyBills = async () => {
+    try {
+      await AsyncStorage.setItem(
+        "offlineMoneyBills",
+        JSON.stringify(moneybills)
+      );
+      // console.log("offlineMoneyBills Değişti")
+      // console.log(moneybills);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleLongMoneyBill = (e) => {
+    if (moneyQuantity != "") {
+      if (moneyQuantity.toString().length < 6) {
+        let newMoneyBills = [...moneybills];
+        newMoneyBills[moneybills.indexOf(e)] = Number(moneyQuantity);
+        setMoneybills(newMoneyBills);
+      } else {
+        Alert.alert("Hata", "Sayılar maksimum 5 haneli olabilir");
+      }
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -195,20 +248,23 @@ const OnlineMain = ({ route }) => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={{display: spectator && "none"}}
+            style={{ display: spectator && "none" }}
             onPress={() => {
               setSelecteds({
                 pozitif: null,
                 negatif: null,
               });
-              setMoneyQuantity(0);
+              setMoneyQuantity("");
             }}
             onLongPress={handleReset}
           >
             <Icon5 name="undo-alt" size={24} color={colors.white} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={{display: spectator && "none"}}  onPress={() => setIsEditVisible(!isEditVisible)}>
+          <TouchableOpacity
+            style={{ display: spectator && "none" }}
+            onPress={() => setIsEditVisible(!isEditVisible)}
+          >
             <Icon6
               name="pencil"
               size={24}
@@ -273,18 +329,26 @@ const OnlineMain = ({ route }) => {
 
       {/* ====== ScrollView ile içeriği kaydırılabilir hale getiriyoruz ====== */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <View style={styles.moneyInputArea}>
-            <Text style={styles.h2Text}>Oda Kodu : {roomId}</Text>
-          </View>
-        <View style={[styles.moneyArea,{display: spectator && "none"}]}>
- 
+        <View style={styles.moneyInputArea}>
+          <Text style={styles.h2Text}>Oda Kodu : {roomId}</Text>
+        </View>
+        <View style={[styles.moneyArea, { display: spectator && "none" }]}>
           <View style={styles.moneyInputArea}>
             <TextInput
               style={styles.input}
-              keyboardType="numeric"
+              // keyboardType="numeric"
               placeholder="Para Miktarını Gir..."
               value={moneyQuantity.toString()}
-              onChangeText={(text) => setMoneyQuantity(Number(text))}
+              onChangeText={(text) => {
+                // Virgülü noktaya çevir ama silme!
+                const fixedText = text.replace(",", ".");
+                // Sadece rakam ve tek bir nokta içersin
+                const valid = fixedText.match(/^(\d+(\.\d*)?)?$/);
+                if (valid || fixedText === "") {
+                  setMoneyQuantity(fixedText);
+                }
+              }}
+              keyboardType="decimal-pad"
             />
             <TouchableOpacity onPress={transferMoney}>
               <Icon6
@@ -297,13 +361,26 @@ const OnlineMain = ({ route }) => {
 
           <View style={styles.moneyBillArea}>
             <View style={styles.moneyBillRow}>
-              {[10, 20, 50, 100].map((e) => {
+              {moneybills?.slice(0, 4).map((e,i) => {
                 return (
                   <TouchableOpacity
-                    key={e}
+                    key={i}
                     style={styles.moneyBill}
                     onPress={() => handleMoneyBill(e)}
-                  >
+                    onLongPress={() => handleLongMoneyBill(e)}
+                  > 
+                                      <View
+                      style={[styles.moneyCircle, { left: -10, top: -10 }]}
+                    ></View>
+                    <View
+                      style={[styles.moneyCircle, { right: -10, top: -10 }]}
+                    ></View>
+                    <View
+                      style={[styles.moneyCircle, { left: -10, bottom: -10 }]}
+                    ></View>
+                    <View
+                      style={[styles.moneyCircle, { right: -10, bottom: -10 }]}
+                    ></View>
                     <Text style={styles.h4Text}>{e}</Text>
                   </TouchableOpacity>
                 );
@@ -311,13 +388,26 @@ const OnlineMain = ({ route }) => {
             </View>
 
             <View style={styles.moneyBillRow}>
-              {[200, 500, 1000, 5000].map((e) => {
+              {moneybills?.slice(4, 8).map((e,i) => {
                 return (
                   <TouchableOpacity
-                    key={e}
+                    key={i}
                     style={styles.moneyBill}
                     onPress={() => handleMoneyBill(e)}
+                    onLongPress={() => handleLongMoneyBill(e)}
                   >
+                                        <View
+                      style={[styles.moneyCircle, { left: -10, top: -10 }]}
+                    ></View>
+                    <View
+                      style={[styles.moneyCircle, { right: -10, top: -10 }]}
+                    ></View>
+                    <View
+                      style={[styles.moneyCircle, { left: -10, bottom: -10 }]}
+                    ></View>
+                    <View
+                      style={[styles.moneyCircle, { right: -10, bottom: -10 }]}
+                    ></View>
                     <Text style={styles.h4Text}>{e}</Text>
                   </TouchableOpacity>
                 );
@@ -449,9 +539,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.lightGreen,
     // padding: 10,
     // paddingHorizontal: 20,
-    width: "20%",
-    height: "80%",
-    borderRadius: 10,
+    width: "23%",
+    height: "85%",
+    borderRadius: 7,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -464,14 +554,23 @@ const styles = StyleSheet.create({
     shadowRadius: 6.68,
 
     elevation: 11,
+    overflow: "hidden",
+
+  },
+  moneyCircle: {
+    backgroundColor: colors.darkGreen,
+    width: 25,
+    height: 25,
+    borderRadius: 20,
+    position: "absolute",
   },
   h4Text: {
     fontSize: 25,
   },
-  h2Text:{
+  h2Text: {
     fontSize: 16,
-    fontWeight:700,
-    color:colors.black
+    fontWeight: 700,
+    color: colors.black,
   },
   modalContainer: {
     backgroundColor: "rgba(0,0,0,0.5)",

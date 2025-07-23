@@ -120,7 +120,6 @@ const Main = () => {
   };
 
   const transferMoney = () => {
-    
     if (moneyQuantity > 0 && selecteds.pozitif != selecteds.negatif) {
       if (selecteds.pozitif != null && selecteds.negatif != null) {
         const updatedGamers = gamers.map((player, index) => {
@@ -131,14 +130,14 @@ const Main = () => {
           if (index === selecteds.pozitif) {
             return {
               ...player,
-              money: Number(player.money) + moneyQuantity, // Pozitif oyuncunun parasını artır
+              money: Number(player.money) + Number(moneyQuantity), // Pozitif oyuncunun parasını artır
             };
           }
 
           if (index === selecteds.negatif) {
             return {
               ...player,
-              money: Number(player.money) - moneyQuantity, // Negatif oyuncunun parasını azalt
+              money: Number(player.money) - Number(moneyQuantity), // Negatif oyuncunun parasını azalt
             };
           }
 
@@ -215,20 +214,16 @@ const Main = () => {
   };
 
   const handleLongMoneyBill = (e) => {
-
-
-
-    if(moneyQuantity != ""){
-
-    console.log(moneyQuantity);
-    let newMoneyBills = [...moneybills];
-    newMoneyBills[moneybills.indexOf(e)] = Number(moneyQuantity);
-    setMoneybills(newMoneyBills);
+    if (moneyQuantity != "") {
+      if (moneyQuantity.toString().length < 6) {
+        let newMoneyBills = [...moneybills];
+        newMoneyBills[moneybills.indexOf(e)] = Number(moneyQuantity);
+        setMoneybills(newMoneyBills);
+      } else {
+        Alert.alert("Hata", "Sayılar maksimum 5 haneli olabilir");
+      }
     }
-
-
   };
-
 
   return (
     <View style={styles.container}>
@@ -354,6 +349,19 @@ const Main = () => {
                     onPress={() => handleMoneyBill(e)}
                     onLongPress={() => handleLongMoneyBill(e)}
                   >
+                    <View
+                      style={[styles.moneyCircle, { left: -10, top: -10 }]}
+                    ></View>
+                    <View
+                      style={[styles.moneyCircle, { right: -10, top: -10 }]}
+                    ></View>
+                    <View
+                      style={[styles.moneyCircle, { left: -10, bottom: -10 }]}
+                    ></View>
+                    <View
+                      style={[styles.moneyCircle, { right: -10, bottom: -10 }]}
+                    ></View>
+
                     <Text style={styles.h4Text}>{e}</Text>
                   </TouchableOpacity>
                 );
@@ -369,6 +377,19 @@ const Main = () => {
                     onPress={() => handleMoneyBill(e)}
                     onLongPress={() => handleLongMoneyBill(e)}
                   >
+                    <View
+                      style={[styles.moneyCircle, { left: -10, top: -10 }]}
+                    ></View>
+                    <View
+                      style={[styles.moneyCircle, { right: -10, top: -10 }]}
+                    ></View>
+                    <View
+                      style={[styles.moneyCircle, { left: -10, bottom: -10 }]}
+                    ></View>
+                    <View
+                      style={[styles.moneyCircle, { right: -10, bottom: -10 }]}
+                    ></View>
+
                     <Text style={styles.h4Text}>{e}</Text>
                   </TouchableOpacity>
                 );
@@ -498,9 +519,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.lightGreen,
     // padding: 10,
     // paddingHorizontal: 20,
-    width: "20%",
-    height: "80%",
-    borderRadius: 10,
+    width: "23%",
+    height: "85%",
+    borderRadius: 7,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -513,6 +534,14 @@ const styles = StyleSheet.create({
     shadowRadius: 6.68,
 
     elevation: 11,
+    overflow: "hidden",
+  },
+  moneyCircle: {
+    backgroundColor: colors.darkGreen,
+    width: 25,
+    height: 25,
+    borderRadius: 20,
+    position: "absolute",
   },
   h4Text: {
     fontSize: 25,

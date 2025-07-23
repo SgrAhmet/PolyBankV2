@@ -2,8 +2,13 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import colors from '../Colors';
 import Icon6 from "react-native-vector-icons/FontAwesome6";
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Enterence = ({navigation}) => {
+
+  // AsyncStorage.clear()
+  
+
   return (
     <View style={styles.container}>
       {/* <TouchableOpacity style={styles.settingsButton} onPress={() => navigation.navigate("OnlineEnterence")}>
@@ -24,7 +29,7 @@ const Enterence = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.darkGreen,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 5,

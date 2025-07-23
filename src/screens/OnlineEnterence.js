@@ -43,6 +43,9 @@ const OnlineEnterence = ({ navigation }) => {
   const setAsyncRoomIdFunc = async (newRoomId) => {
     try {
       await AsyncStorage.setItem("asyncRoomId", newRoomId);
+
+      console.log("AsyncStorage newRoomId added");
+
     } catch (error) {
       console.warn(error);
     }
@@ -67,7 +70,7 @@ const OnlineEnterence = ({ navigation }) => {
 
       while (exists) {
         roomId = generateRoomId();
-        roomRef = doc(db, "deneme", roomId);
+        roomRef = doc(db, "rooms", roomId);
         const docSnap = await getDoc(roomRef);
         exists = docSnap.exists();
         console.log("Oda ID:", roomId, "| Var mı?", exists); // Bu satırı ekle
@@ -88,8 +91,8 @@ const OnlineEnterence = ({ navigation }) => {
       setTest("Oda: " + roomId);
 
       setAsyncRoomIdFunc(roomId);
+      setAsyncRoomId(roomId)
       navigation.navigate("OnlineMain", { roomId: roomId });
-      // console.log("Yoksa");
     } else {
       // console.log("varsa");
       navigation.navigate("OnlineMain", {
@@ -118,7 +121,7 @@ const OnlineEnterence = ({ navigation }) => {
       // console.log("jglkdfjhgkdnghkjfkjnk");
       try {
         let exists = true;
-        let roomRef = doc(db, "deneme", inputRoomId);
+        let roomRef = doc(db, "rooms", inputRoomId);
         const docSnap = await getDoc(roomRef);
         exists = docSnap.exists();
         console.log("Oda ID:", inputRoomId, "| Var mı?", exists); // Bu satırı ekle
