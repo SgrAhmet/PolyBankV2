@@ -3,6 +3,10 @@ import { StyleSheet, Text, TouchableOpacity, View, Image,Linking } from "react-n
 import colors from "../Colors";
 import Icon5 from "react-native-vector-icons/FontAwesome5";
 import CountryFlag from "react-native-country-flag";
+import { t, setLanguage } from "../../locales/lang";
+
+
+
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Enterence = ({ navigation }) => {
@@ -19,8 +23,10 @@ const Enterence = ({ navigation }) => {
   const changeLang =()=>{
     if(lang == "tr"){
       setLang("us")
+      setLanguage("en")
     }else{
       setLang("tr")
+      setLanguage("tr")
     }
   }
   return (
@@ -39,7 +45,7 @@ const Enterence = ({ navigation }) => {
       >
         <Icon5 name="globe-americas" size={24} color={colors.darkGreen} />
         <Text style={[styles.btnText, { color: colors.darkGreen }]}>
-          ONLINE
+          {t("online")}
         </Text>
         <Icon5 name="globe-americas" size={24} color={colors.darkGreen} />
       </TouchableOpacity>
@@ -49,7 +55,7 @@ const Enterence = ({ navigation }) => {
       >
         <Icon5 name="gamepad" size={24} color={colors.brown} />
 
-        <Text style={[styles.btnText, { color: colors.brown }]}>OFFLINE</Text>
+        <Text style={[styles.btnText, { color: colors.brown }]}>{t("offline")}</Text>
         <Icon5 name="gamepad" size={24} color={colors.brown} />
 
       </TouchableOpacity>
