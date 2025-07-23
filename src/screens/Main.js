@@ -16,7 +16,7 @@ import colors from "../Colors";
 import PlayerListItem from "../PlayerListItem";
 import { Audio } from "expo-av";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import x from "../"
+import { t, setLanguage,currentLang } from "../../locales/lang";
 
 const Main = () => {
   const [isEditVisible, setIsEditVisible] = useState(false);
@@ -181,15 +181,15 @@ const Main = () => {
   };
   const handleReset = () => {
     Alert.alert(
-      "Oyunu Sıfırlamak",
-      "Oyunu Sıfırlamak İstediğinizden Emin Misiniz ?",
+      t("resetGame"),
+      t("areYouSureToResetGame"),
       [
         {
-          text: "Hayır",
+          text: t("no"),
           // onPress: () => console.log('Cancel Pressed'),
           style: "cancel",
         },
-        { text: "Evet", onPress: resetGame },
+        { text: t("yes"), onPress: resetGame },
       ]
     );
   };
@@ -220,7 +220,7 @@ const Main = () => {
         newMoneyBills[moneybills.indexOf(e)] = Number(moneyQuantity);
         setMoneybills(newMoneyBills);
       } else {
-        Alert.alert("Hata", "Sayılar maksimum 5 haneli olabilir");
+        Alert.alert(t("error"), t("max5Digit"));
       }
     }
   };
@@ -317,7 +317,7 @@ const Main = () => {
             <TextInput
               style={styles.input}
               // keyboardType="numeric"
-              placeholder="Para Miktarı Gir"
+              placeholder={t("enterMoney")}
               placeholderTextColor={colors.lightBrown}
               value={moneyQuantity.toString()}
               onChangeText={(text) => {
@@ -408,7 +408,7 @@ const Main = () => {
               style={styles.input}
               value={newGamerName}
               onChangeText={(text) => setNewGamerName(text)}
-              placeholder="İsim gir..."
+              placeholder={t("enterName")}
               placeholderTextColor={colors.lightBrown}
             />
             <TouchableOpacity onPress={addNewGamer}>

@@ -3,15 +3,13 @@ import { StyleSheet, Text, TouchableOpacity, View, Image,Linking } from "react-n
 import colors from "../Colors";
 import Icon5 from "react-native-vector-icons/FontAwesome5";
 import CountryFlag from "react-native-country-flag";
-import { t, setLanguage } from "../../locales/lang";
+import { t, setLanguage,currentLang } from "../../locales/lang";
 
-
-
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Enterence = ({ navigation }) => {
   // AsyncStorage.clear()
-  const [lang, setLang] = useState("tr")
+  const [lang, setLang] = useState(currentLang == "tr" ? "tr" : "us")
 
   const githubLink = "https://github.com/SgrAhmet"
   const linkedinLink = "https://www.linkedin.com/in/ahmet-aydos/"

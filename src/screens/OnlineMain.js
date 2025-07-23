@@ -28,6 +28,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firestore"; // Firebase yapılandırma dosyanızın yolu
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { t, setLanguage,currentLang } from "../../locales/lang";
 
 // import x from "../"
 const OnlineMain = ({ route }) => {
@@ -180,15 +181,15 @@ const OnlineMain = ({ route }) => {
   };
   const handleReset = () => {
     Alert.alert(
-      "Oyunu Sıfırlamak",
-      "Oyunu Sıfırlamak İstediğinizden Emin Misiniz ?",
+      t("resetGame"),
+      t("areYouSureToResetGame"),
       [
         {
-          text: "Hayır",
+          text: t("no"),
           // onPress: () => console.log('Cancel Pressed'),
           style: "cancel",
         },
-        { text: "Evet", onPress: resetGame },
+        { text: t("yes"), onPress: resetGame },
       ]
     );
   };
@@ -236,7 +237,7 @@ const OnlineMain = ({ route }) => {
         newMoneyBills[moneybills.indexOf(e)] = Number(moneyQuantity);
         setMoneybills(newMoneyBills);
       } else {
-        Alert.alert("Hata", "Sayılar maksimum 5 haneli olabilir");
+        Alert.alert(t("error"), t("max5Digit"));
       }
     }
   };
@@ -356,14 +357,14 @@ const OnlineMain = ({ route }) => {
       {/* ====== ScrollView ile içeriği kaydırılabilir hale getiriyoruz ====== */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.moneyInputArea}>
-          <Text style={styles.h2Text}>Oda Kodu : {roomId}</Text>
+          <Text style={styles.h2Text}>{t("roomId")} : {roomId}</Text>
         </View>
         <View style={[styles.moneyArea, { display: spectator && "none" }]}>
           <View style={styles.moneyInputArea}>
             <TextInput
               style={styles.input}
               // keyboardType="numeric"
-              placeholder="Para Miktarı Gir"
+              placeholder={t("enterMoney")}
               caretHidden={true}
               placeholderTextColor={colors.lightBrown}
               value={moneyQuantity.toString()}
@@ -453,7 +454,7 @@ const OnlineMain = ({ route }) => {
               style={styles.input}
               value={newGamerName}
               onChangeText={(text) => setNewGamerName(text)}
-              placeholder="İsim Gir"
+              placeholder={t("enterName")}
               placeholderTextColor={colors.lightBrown}
             />
             <TouchableOpacity onPress={addNewGamer}>

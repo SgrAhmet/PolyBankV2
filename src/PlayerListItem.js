@@ -4,6 +4,8 @@ import Icon5 from "react-native-vector-icons/FontAwesome5";
 import Icon from "react-native-vector-icons/FontAwesome";
 import IconIon from "react-native-vector-icons/Ionicons";
 import colors from "./Colors";
+import { t, setLanguage,currentLang } from "../locales/lang";
+
 const PlayerListItem = ({ index, name, money, selecteds, setSelecteds,gamers,setGamers,isEditVisible,history,setHistory,spectator }) => {
 
 
@@ -40,12 +42,15 @@ const PlayerListItem = ({ index, name, money, selecteds, setSelecteds,gamers,set
     styleDelete.pop()
   }
 
-
+  
+  if(index == 0 && name == "Banka"){
+      name = t("bank") 
+  }
   return (
     <View style={styles.container}>
       {/* <IconIon name="person" size={32} color={colors.white} /> */}
 
-      {name == "Banka" ? (
+      {index == 0 && name == "Banka" ? (
         <Icon name="bank" size={32} color={colors.white} />
       ) : (
         <IconIon name="person" size={32} color={colors.white} />

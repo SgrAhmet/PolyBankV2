@@ -22,7 +22,8 @@ import {
 import { db } from "../../firestore"; // Firebase yapılandırma dosyanızın yolu
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import { TextInput } from "react-native";
+
+import { t, setLanguage,currentLang } from "../../locales/lang";
 
 const OnlineEnterence = ({ navigation }) => {
   const [test, setTest] = useState("Waiting...");
@@ -108,8 +109,8 @@ const OnlineEnterence = ({ navigation }) => {
       inputRoomId.trim().length > 6
     ) {
       Alert.alert(
-        "Geçersiz Oda Numarası",
-        "Lütfen geçerli bir oda numarası yazınınz"
+        t("invalidRoomId"),
+        t("pleaseEnterValidRoomId")
       );
     } else {
       // console.log("jglkdfjhgkdnghkjfkjnk");
@@ -128,8 +129,8 @@ const OnlineEnterence = ({ navigation }) => {
           setInputRoomId("");
         } else {
           Alert.alert(
-            "Oda Numarası Bulunamadı",
-            "Lütfen geçerli bir oda numarası yazınınz"
+            t("cantFindRoomId"),
+            t("pleaseEnterValidRoomId")
           );
         }
       } catch (error) {
@@ -138,24 +139,18 @@ const OnlineEnterence = ({ navigation }) => {
     }
   };
 
-  // useEffect(() => {
 
-  // console.log(inputRoomId);
-
-  // }, [inputRoomId])
-
-  console.log("asyncRoomId is " + asyncRoomId);
   return (
     <View style={styles.container}>
       {/* <Text>OnlineEnterence - {test} </Text> */}
-      <Text style={styles.h1Text}>Your Room ID : {asyncRoomId == undefined ? "Not Created Yet" : asyncRoomId } </Text>
+      <Text style={styles.h1Text}>{t("yourRoomId")}:{asyncRoomId == undefined ?t("notCreatedYet"): asyncRoomId } </Text>
 
       <TouchableOpacity
         style={[styles.button, { backgroundColor: colors.darkGreen }]}
         onPress={() => createRoom()}
       >
         <Text style={[styles.btnText, { color: colors.brown }]}>
-          Create Room
+          {t("createRoom")}
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
@@ -172,13 +167,13 @@ const OnlineEnterence = ({ navigation }) => {
         onPress={() => EnterRoom()}
       >
         <Text style={[styles.btnText, { color: colors.darkGreen }]}>
-          Enter Room
+        {t("enterRoom")}
         </Text>
       </TouchableOpacity>
 
       <TextInput
         style={styles.textInput}
-        placeholder="Enter Room ID"
+        placeholder={t("enterRoomId")}
         keyboardType="numeric"
         caretHidden={true}
         value={inputRoomId}
