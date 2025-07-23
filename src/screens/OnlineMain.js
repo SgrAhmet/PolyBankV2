@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,6 +8,7 @@ import {
   ScrollView,
   Modal,
   Alert,
+  Animated
 } from "react-native";
 import Icon6 from "react-native-vector-icons/FontAwesome6";
 import Icon5 from "react-native-vector-icons/FontAwesome5";
@@ -60,6 +61,9 @@ const OnlineMain = ({ route }) => {
         // setData({ id: docSnap.id, ...docSnap.data() }); // Veriyi state'e set et
         // console.log("onSnapshot Çalıştı");
         setData(docSnap.data());
+        if(spectator){
+          blink()
+        }
         // console.log(docSnap.data());
       } else {
         console.log("No such document!");
@@ -237,8 +241,30 @@ const OnlineMain = ({ route }) => {
     }
   };
 
+  const fadeAnim = useRef(new Animated.Value(1)).current; // opacity başlangıç değeri
+
+  const blink = () => {
+    Animated.sequence([
+      Animated.timing(fadeAnim, {
+        toValue: 0, // görünmez
+        duration: 200,
+        useNativeDriver: true,
+      }),
+      Animated.timing(fadeAnim, {
+        toValue: 1, // tekrar görünür
+        duration: 200,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
+
+  const backgroundColor = fadeAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [colors.white, colors.darkGreen], // beyazdan sarıya geçiş
+  });
+
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container,{backgroundColor}]}>
       {/* ====== Banner ====== */}
       <View style={styles.banner}>
         <Text style={styles.h1Text}>PolyBank</Text>
@@ -458,7 +484,7 @@ const OnlineMain = ({ route }) => {
             })}
         </View>
       </ScrollView>
-    </View>
+    </Animated.View>
   );
 };
 
@@ -613,146 +639,5 @@ const styles = StyleSheet.create({
   }
 });
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: colors.white,
-//     width: "100%",
-//     gap: 5,
-//   },
-//   scrollContainer: {
-//     // backgroundColor:"red",
-//     paddingBottom: 20, // Kaydırma sorunu olmaması için ekstra boşluk bırak
-//   },
-//   banner: {
-//     backgroundColor: colors.darkGreen,
-//     width: "100%",
-//     height: "12%",
-//     flexDirection: "row",
-//     alignItems: "center",
-//     justifyContent: "space-between",
-//     paddingTop: 35,
-//     paddingLeft: 30,
-//     paddingRight: 30,
-//   },
-//   bannerBtnArea: {
-//     flexDirection: "row",
-//     alignItems: "center",
-//     gap: 30,
-//   },
-//   h1Text: {
-//     fontSize: 28,
-//     color: colors.white,
-//     fontWeight: "900",
-//   },
-//   playerArea: {
-//     // backgroundColor: "blue",
-//     flexDirection: "column",
-//     gap: 10,
-//   },
-//   editArea: {
-//     flexDirection: "row",
-//     alignItems: "center",
-//     justifyContent: "space-around",
-//     zIndex: 999,
-//   },
-//   input: {
-//     width: "60%",
-//     margin: 12,
-//     borderWidth: 1,
-//     padding: 10,
-//     borderRadius: 10,
-//     fontSize: 20,
-//   },
-//   moneyArea: {
-//     // backgroundColor: "red",
-//     height: 200,
-//     width: "100%",
-//   },
-//   moneyInputArea: {
-//     // backgroundColor:"blue",
-//     display: "flex",
-//     flexDirection: "row",
-//     alignItems: "center",
-//     justifyContent: "space-evenly",
-//   },
-//   moneyBillArea: {
-//     // backgroundColor: "red",
-//     padding: 10,
-//     height: "60%",
-//     display: "flex",
-//   },
-//   moneyBillRow: {
-//     // backgroundColor:"green",
-//     display: "flex",
-//     flexDirection: "row",
-//     alignItems: "center",
-//     justifyContent: "space-between",
-//   },
-//   moneyBill: {
-//     backgroundColor: colors.lightGreen,
-//     // padding: 10,
-//     // paddingHorizontal: 20,
-//     width: "23%",
-//     height: "85%",
-//     borderRadius: 7,
-//     display: "flex",
-//     alignItems: "center",
-//     justifyContent: "center",
-//     shadowColor: "#000",
-//     shadowOffset: {
-//       width: 0,
-//       height: 5,
-//     },
-//     shadowOpacity: 0.36,
-//     shadowRadius: 6.68,
-
-//     elevation: 11,
-//     overflow: "hidden",
-
-//   },
-//   moneyCircle: {
-//     backgroundColor: colors.darkGreen,
-//     width: 25,
-//     height: 25,
-//     borderRadius: 20,
-//     position: "absolute",
-//   },
-//   h4Text: {
-//     fontSize: 22,
-//   },
-//   h2Text: {
-//     fontSize: 16,
-//     fontWeight: 700,
-//     color: colors.black,
-//   },
-//   modalContainer: {
-//     backgroundColor: "rgba(0,0,0,0.5)",
-//     width: "100%",
-//     height: "100%",
-//     display: "flex",
-//     alignItems: "center",
-//     justifyContent: "center",
-//     paddingBottom: 20, // Kaydırma sorunu olmaması için ekstra boşluk bırak
-//   },
-//   modalCard: {
-//     backgroundColor: colors.white,
-//     width: "90%",
-//     maxHeight: "80%",
-//     borderRadius: 20,
-//     padding: 20,
-//   },
-//   modalItem: {
-//     backgroundColor: colors.red,
-//     display: "flex",
-//     justifyContent: "space-evenly",
-//     alignItems: "center",
-//     flexDirection: "row",
-//     borderRadius: 12,
-//     gap: 20,
-//     padding: 10,
-//     marginBottom: 16,
-//   },
-// });
 
 export default OnlineMain;

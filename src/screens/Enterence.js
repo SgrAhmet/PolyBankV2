@@ -1,11 +1,13 @@
-import React from "react";
+import React,{useState} from "react";
 import { StyleSheet, Text, TouchableOpacity, View, Image,Linking } from "react-native";
 import colors from "../Colors";
 import Icon5 from "react-native-vector-icons/FontAwesome5";
+import CountryFlag from "react-native-country-flag";
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Enterence = ({ navigation }) => {
   // AsyncStorage.clear()
+  const [lang, setLang] = useState("tr")
 
   const githubLink = "https://github.com/SgrAhmet"
   const linkedinLink = "https://www.linkedin.com/in/ahmet-aydos/"
@@ -14,8 +16,22 @@ const Enterence = ({ navigation }) => {
     Linking.openURL(link)
   }
 
+  const changeLang =()=>{
+    if(lang == "tr"){
+      setLang("us")
+    }else{
+      setLang("tr")
+    }
+  }
   return (
     <View style={styles.container}>
+
+      <TouchableOpacity style={styles.flagButton} onPress={changeLang}>
+
+      <CountryFlag isoCode={lang} size={32} />
+
+      </TouchableOpacity>
+      
       <Text style={styles.h1Text}>PolyBank</Text>
       <TouchableOpacity
         style={[styles.button, { backgroundColor: colors.brown }]}
@@ -101,6 +117,11 @@ const styles = StyleSheet.create({
     alignItems:"center",
     justifyContent:"center",
     gap:50
+  },
+  flagButton:{
+    position:"absolute",
+    top:"8%",
+    right:"5%"
   }
 });
 
