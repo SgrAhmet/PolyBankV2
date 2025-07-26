@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Enterence = ({ navigation }) => {
   // AsyncStorage.clear()
-  const [lang, setLang] = useState(currentLang == "tr" ? "tr" : "us")
+  const [lang, setLang] = useState(currentLang)
 
   const githubLink = "https://github.com/SgrAhmet"
   const linkedinLink = "https://www.linkedin.com/in/ahmet-aydos/"
@@ -125,7 +125,10 @@ const styles = StyleSheet.create({
   flagButton:{
     position:"absolute",
     top:"8%",
-    right:"5%"
+    right:"5%",
+    borderWidth:2,
+    borderColor:colors.brown,
+    borderRadius:5
   }
 });
 

@@ -49,7 +49,7 @@ export const strings = {
 
 
 // Şu anki dil, buradan kontrol edilir
-export let currentLang = "tr"; // veya 'en'
+export let currentLang = "tr"; // veya 'us'
 
 export const setLanguage = (lang) => {
   currentLang = lang;

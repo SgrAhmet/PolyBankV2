@@ -175,6 +175,7 @@ const OnlineEnterence = ({ navigation }) => {
         style={styles.textInput}
         placeholder={t("enterRoomId")}
         keyboardType="numeric"
+        maxLength={6}
         caretHidden={true}
         value={inputRoomId}
         placeholderTextColor= {colors.lightBrown}

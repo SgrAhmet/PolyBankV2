@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import Icon6 from "react-native-vector-icons/FontAwesome6";
 import Icon5 from "react-native-vector-icons/FontAwesome5";
+import Icon from "react-native-vector-icons/FontAwesome";
 import IconIon from "react-native-vector-icons/Ionicons";
 import colors from "../Colors";
 import PlayerListItem from "../PlayerListItem";
@@ -178,6 +179,7 @@ const OnlineMain = ({ route }) => {
     ]);
     setHistory([]);
     setMoneybills([10, 20, 50, 100, 200, 500, 1000, 5000]);
+    setMoneyQuantity("")
   };
   const handleReset = () => {
     Alert.alert(
@@ -230,11 +232,11 @@ const OnlineMain = ({ route }) => {
     }
   };
 
-  const handleLongMoneyBill = (e) => {
+  const handleLongMoneyBill = (e,i) => {
     if (moneyQuantity != "") {
       if (moneyQuantity.toString().length < 6) {
         let newMoneyBills = [...moneybills];
-        newMoneyBills[moneybills.indexOf(e)] = Number(moneyQuantity);
+        newMoneyBills[i] = Number(moneyQuantity);
         setMoneybills(newMoneyBills);
       } else {
         Alert.alert(t("error"), t("max5Digit"));
@@ -312,6 +314,11 @@ const OnlineMain = ({ route }) => {
         <View style={styles.modalContainer}>
           {/* Dış kutu (card görünümü) */}
           <View style={styles.modalCard}>
+
+          <TouchableOpacity onPress={()=>setModalVisible(false)} style={styles.modalCloseButton}>
+              <Icon name="close" size={50} color={colors.lightRed}/>
+            </TouchableOpacity>
+
             {/* İçerik scrollable */}
             <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
               {Array.isArray(history) &&
@@ -396,7 +403,7 @@ const OnlineMain = ({ route }) => {
                     key={i}
                     style={styles.moneyBill}
                     onPress={() => handleMoneyBill(e)}
-                    onLongPress={() => handleLongMoneyBill(e)}
+                    onLongPress={() => handleLongMoneyBill(e,i)}
                   > 
                                       <View
                       style={[styles.moneyCircle, { left: -10, top: -10 }]}
@@ -423,7 +430,7 @@ const OnlineMain = ({ route }) => {
                     key={i}
                     style={styles.moneyBill}
                     onPress={() => handleMoneyBill(e)}
-                    onLongPress={() => handleLongMoneyBill(e)}
+                    onLongPress={() => handleLongMoneyBill(e,i+4)}
                   >
                                         <View
                       style={[styles.moneyCircle, { left: -10, top: -10 }]}
@@ -621,6 +628,11 @@ const styles = StyleSheet.create({
     height:"80%",
     borderRadius: 20,
     padding: 20,
+  },
+  modalCloseButton:{
+    position:"absolute",
+    top:-25,
+    right:-15
   },
   modalItem: {
     backgroundColor: colors.brown,
