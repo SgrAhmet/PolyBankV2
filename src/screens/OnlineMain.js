@@ -27,7 +27,7 @@ import {
   setDoc,
   onSnapshot,
 } from "firebase/firestore";
-import { db } from "../../firestore"; // Firebase yapılandırma dosyanızın yolu
+import { db } from "../../firebaseConfig"; // Firebase yapılandırma dosyanızın yolu
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { t, setLanguage,currentLang } from "../../locales/lang";
 
