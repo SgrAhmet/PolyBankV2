@@ -29,6 +29,7 @@ const OnlineEnterence = ({ navigation }) => {
   const [test, setTest] = useState("Waiting...");
   const [asyncRoomId, setAsyncRoomId] = useState();
   const [inputRoomId, setInputRoomId] = useState("");
+  // const [inputRoomId, setInputRoomId] = useState("336293");
 
   const getAsyncRoomId = async () => {
     const roomId = await AsyncStorage.getItem("asyncRoomId");

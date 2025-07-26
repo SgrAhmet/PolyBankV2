@@ -156,7 +156,10 @@ const Main = () => {
         quantity: moneyQuantity,
       };
       setHistory([historyItem, ...history]);
-
+      setSelecteds({
+        pozitif: null,
+        negatif: null,
+      });
       // setAsyncItem()
     } else {
       // console.log("Error");
@@ -212,16 +215,18 @@ const Main = () => {
   };
 
   const handleLongMoneyBill = (e, i) => {
-    console.log("e is ");
-    console.log(e);
-    console.log("i is ");
-    console.log(i);
+    // console.log("e is ");
+    // console.log(e);
+    // console.log("i is ");
+    // console.log(i);
 
     if (moneyQuantity != "") {
       if (moneyQuantity.toString().length < 6) {
         let newMoneyBills = [...moneybills];
         newMoneyBills[i] = Number(moneyQuantity);
         setMoneybills(newMoneyBills);
+        setMoneyQuantity("");
+
       } else {
         Alert.alert(t("error"), t("max5Digit"));
       }
@@ -310,7 +315,7 @@ const Main = () => {
                   return (
                     <View style={styles.modalItem} key={i}>
                       <Text>{e.negatif}</Text>
-                      <Text>{e.quantity} ₩</Text>
+                      <Text>{e.quantity} $</Text>
                       <Icon5
                         name="long-arrow-alt-right"
                         size={32}
@@ -426,6 +431,7 @@ const Main = () => {
               onChangeText={(text) => setNewGamerName(text)}
               placeholder={t("enterName")}
               placeholderTextColor={colors.lightBrown}
+              // maxLength={11}
             />
             <TouchableOpacity onPress={addNewGamer}>
               <Icon5 name="user-plus" size={32} color={colors.white} />

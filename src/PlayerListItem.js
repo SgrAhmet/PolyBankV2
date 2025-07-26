@@ -1,15 +1,25 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
 import Icon5 from "react-native-vector-icons/FontAwesome5";
+import Icon6 from "react-native-vector-icons/FontAwesome6";
 import Icon from "react-native-vector-icons/FontAwesome";
 import IconIon from "react-native-vector-icons/Ionicons";
 import colors from "./Colors";
-import { t, setLanguage,currentLang } from "../locales/lang";
+import { t, setLanguage, currentLang } from "../locales/lang";
 
-const PlayerListItem = ({ index, name, money, selecteds, setSelecteds,gamers,setGamers,isEditVisible,history,setHistory,spectator }) => {
-
-
-
+const PlayerListItem = ({
+  index,
+  name,
+  money,
+  selecteds,
+  setSelecteds,
+  gamers,
+  setGamers,
+  isEditVisible,
+  history,
+  setHistory,
+  spectator,
+}) => {
   const changePozitive = () => {
     // if(selecteds.negatif != index){
     setSelecteds({ ...selecteds, pozitif: index });
@@ -31,46 +41,76 @@ const PlayerListItem = ({ index, name, money, selecteds, setSelecteds,gamers,set
     stylePozitive.push({ backgroundColor: colors.lightGreen });
   }
 
-  const deleteGamer =()=>{
-    setHistory([{pozitif:name,negatif:"Banka",quantity:"deleteGamer"},...history,])
-    setGamers(prev => prev.filter((_, i) => i !== index));
+  const deleteGamer = () => {
+    setHistory([
+      { pozitif: name, negatif: "Banka", quantity: "deleteGamer" },
+      ...history,
+    ]);
+    setGamers((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  let styleDelete = [styles.deleteBtn, { display: "none" }];
+  if (isEditVisible) {
+    styleDelete.pop();
   }
 
-
-  let styleDelete =[styles.deleteBtn,{display:"none"}]
-  if(isEditVisible){
-    styleDelete.pop()
+  if (index == 0 && name == "Banka") {
+    name = t("bank");
   }
+  // Monopoly Symbol ₩
 
-  
-  if(index == 0 && name == "Banka"){
-      name = t("bank") 
-  }
   return (
     <View style={styles.container}>
       {/* <IconIon name="person" size={32} color={colors.white} /> */}
 
       {index == 0 ? (
-        <Icon name="bank" size={32} color={colors.white} />
+        <View style={styles.iconArea}>
+          <Icon name="bank" size={32} color={colors.white} />
+        </View>
       ) : (
-        <IconIon name="person" size={32} color={colors.white} />
+        <View style={styles.iconArea}>
+          <IconIon name="person" size={32} color={colors.white} />
+        </View>
       )}
 
-      <Text style={styles.h3Text}>{name}</Text>
-      <Text style={styles.h3Text}>{money} ₩</Text>
-      <View style={styles.btnsArea}>
-        <TouchableOpacity style={[stylePozitive,{display: spectator && "none"}]} onPress={changePozitive}>
-          <Icon5 name="plus" size={32} color={colors.white} />
-        </TouchableOpacity>
-        <TouchableOpacity style={[styleNegative,{display: spectator && "none"}]} onPress={changeNegative}>
-          <Icon5 name="minus" size={32} color={colors.white} />
+      <View style={styles.nameArea}>
+        <Text style={styles.h3Text}>{name}</Text>
+      </View>
+
+      <View style={styles.moneyArea}>
+        {index == 0 ? (
+          <View style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"center"}}>
+          <Icon6 name="infinity" size={32} color={colors.black} />
+          <Text style={styles.h3Text}> $</Text>
+          
+          </View>
+        ) : (
+          <Text style={styles.h3Text}>{money} $</Text>
+          
+        )}
+      </View>
+
+      <View
+        style={[
+          styles.btnsArea,
+          { display: spectator || isEditVisible ? "none" : null },
+        ]}
+      >
+        <TouchableOpacity style={[stylePozitive]} onPress={changePozitive}>
+          <Icon5 name="plus" size={24} color={colors.white} />
         </TouchableOpacity>
 
-        
-      </View>
-      <TouchableOpacity style={index != 0 ? styleDelete : {display : "none"}} onPress={deleteGamer}>
-          <Icon5 name="ban" size={32} color={colors.lightRed} />
+        <TouchableOpacity style={[styleNegative]} onPress={changeNegative}>
+          <Icon5 name="minus" size={24} color={colors.white} />
         </TouchableOpacity>
+      </View>
+
+      <TouchableOpacity
+        style={index != 0 ? styleDelete : { display: "none" }}
+        onPress={deleteGamer}
+      >
+        <Icon5 name="trash-alt" size={32} color={colors.lightRed} />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -82,7 +122,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "space-evenly",
     height: 90,
     // height: "16%",
     margin: 5,
@@ -97,15 +137,17 @@ const styles = StyleSheet.create({
 
     elevation: 11,
     // gap: 5,
+    overflow: "hidden",
+    gap: 10,
   },
   h3Text: {
     fontSize: 20,
     fontWeight: 400,
-    fontFamily:"monospace"
+    fontFamily: "monospace",
   },
   btnsArea: {
-    width: "30%",
-    height: "80%",
+    // minWidth: "30%",
+    // height: "80%",
     // backgroundColor: "red",
     display: "flex",
     flexDirection: "row",
@@ -115,17 +157,47 @@ const styles = StyleSheet.create({
   },
   btnArea: {
     backgroundColor: colors.darkGreen,
-    padding: 10,
-    paddingHorizontal: 12,
-    borderColor: colors.black,
-    borderWidth: 2,
-    borderRadius: 10,
+    padding: 7,
+    paddingHorizontal: 9,
+    // padding: 10,
+    // paddingHorizontal: 12,
+    // borderColor: colors.black,
+    // borderWidth: 2,
+    borderRadius: 5,
   },
-  deleteBtn:{
-    position:"absolute",
-    left:-3,
-    top:-10
-  }
+  iconArea: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+
+    // backgroundColor: "red",
+    minWidth: 40,
+  },
+  nameArea: {
+    display: "flex",
+    // alignItems:"center",
+    // justifyContent:"center",
+    // textAlign:"center",
+    // backgroundColor: "orange",
+    // minWidth:120,
+    // maxWidth:130,
+    width: "20%",
+    // width:60
+  },
+  moneyArea: {
+    display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "center",
+
+    // backgroundColor: "green",
+    width: "33%",
+    // width:120
+  },
+  deleteBtn: {
+    // position: "absolute",
+    // right: 0,
+    // top: -10,
+  },
 });
 
 export default PlayerListItem;

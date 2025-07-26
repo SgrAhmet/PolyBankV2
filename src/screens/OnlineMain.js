@@ -158,6 +158,10 @@ const OnlineMain = ({ route }) => {
         quantity: moneyQuantity,
       };
       setHistory([historyItem, ...history]);
+      setSelecteds({
+        pozitif: null,
+        negatif: null,
+      });
     } else {
       console.log("jsfdjsd");
     }
@@ -238,6 +242,8 @@ const OnlineMain = ({ route }) => {
         let newMoneyBills = [...moneybills];
         newMoneyBills[i] = Number(moneyQuantity);
         setMoneybills(newMoneyBills);
+        setMoneyQuantity("");
+
       } else {
         Alert.alert(t("error"), t("max5Digit"));
       }
