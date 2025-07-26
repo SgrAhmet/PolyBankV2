@@ -50,7 +50,7 @@ const PlayerListItem = ({ index, name, money, selecteds, setSelecteds,gamers,set
     <View style={styles.container}>
       {/* <IconIon name="person" size={32} color={colors.white} /> */}
 
-      {index == 0 && name == "Banka" ? (
+      {index == 0 ? (
         <Icon name="bank" size={32} color={colors.white} />
       ) : (
         <IconIon name="person" size={32} color={colors.white} />

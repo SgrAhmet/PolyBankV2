@@ -1,41 +1,49 @@
-import React,{useState} from "react";
-import { StyleSheet, Text, TouchableOpacity, View, Image,Linking } from "react-native";
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+  Linking,
+} from "react-native";
 import colors from "../Colors";
 import Icon5 from "react-native-vector-icons/FontAwesome5";
 import CountryFlag from "react-native-country-flag";
-import { t, setLanguage,currentLang } from "../../locales/lang";
+import { t, setLanguage, currentLang } from "../../locales/lang";
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Enterence = ({ navigation }) => {
   // AsyncStorage.clear()
-  const [lang, setLang] = useState(currentLang)
+  const [lang, setLang] = useState(currentLang);
 
-  const githubLink = "https://github.com/SgrAhmet"
-  const linkedinLink = "https://www.linkedin.com/in/ahmet-aydos/"
-  
-  const openLink =(link)=>{
-    Linking.openURL(link)
-  }
+  const githubLink = "https://github.com/SgrAhmet";
+  const linkedinLink = "https://www.linkedin.com/in/ahmet-aydos/";
 
-  const changeLang =()=>{
-    if(lang == "tr"){
-      setLang("us")
-      setLanguage("us")
-    }else{
-      setLang("tr")
-      setLanguage("tr")
+  const openLink = (link) => {
+    Linking.openURL(link);
+  };
+
+  const changeLang = () => {
+    if (lang == "tr") {
+      setLang("us");
+      setLanguage("us");
+    } else {
+      setLang("tr");
+      setLanguage("tr");
     }
-  }
+  };
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.infoButton}>
+        <Icon5 name="question" size={32} color={colors.brown} />
+      </TouchableOpacity>
 
       <TouchableOpacity style={styles.flagButton} onPress={changeLang}>
-
-      <CountryFlag isoCode={lang} size={32} />
-
+        <CountryFlag isoCode={lang} size={32} />
       </TouchableOpacity>
-      
+
       <Text style={styles.h1Text}>PolyBank</Text>
       <TouchableOpacity
         style={[styles.button, { backgroundColor: colors.brown }]}
@@ -53,22 +61,20 @@ const Enterence = ({ navigation }) => {
       >
         <Icon5 name="gamepad" size={24} color={colors.brown} />
 
-        <Text style={[styles.btnText, { color: colors.brown }]}>{t("offline")}</Text>
+        <Text style={[styles.btnText, { color: colors.brown }]}>
+          {t("offline")}
+        </Text>
         <Icon5 name="gamepad" size={24} color={colors.brown} />
-
       </TouchableOpacity>
 
-
       <View style={styles.footer}>
-
-        <TouchableOpacity onPress={()=>openLink(linkedinLink)}>
-        <Icon5 name="linkedin" size={40} color={colors.brown} />
+        <TouchableOpacity onPress={() => openLink(linkedinLink)}>
+          <Icon5 name="linkedin" size={40} color={colors.brown} />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={()=>openLink(githubLink)}>
-        <Icon5 name="github" size={40} color={colors.brown} />
+        <TouchableOpacity onPress={() => openLink(githubLink)}>
+          <Icon5 name="github" size={40} color={colors.brown} />
         </TouchableOpacity>
-
       </View>
     </View>
   );
@@ -110,26 +116,34 @@ const styles = StyleSheet.create({
     fontFamily: "monospace",
     marginBottom: 50,
   },
-  footer:{
+  footer: {
     // backgroundColor:"red",
-    width:"100%",
-    height:"10%",
-    position:"absolute",
-    bottom:20,
-    display:"flex",
-    flexDirection:"row",
-    alignItems:"center",
-    justifyContent:"center",
-    gap:50
+    width: "100%",
+    height: "10%",
+    position: "absolute",
+    bottom: 20,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 50,
   },
-  flagButton:{
-    position:"absolute",
-    top:"8%",
-    right:"5%",
-    borderWidth:2,
-    borderColor:colors.brown,
-    borderRadius:5
-  }
+  flagButton: {
+    position: "absolute",
+    top: "10%",
+    left: "5%",
+    borderWidth: 2,
+    borderColor: colors.brown,
+    borderRadius: 5,
+  },
+  infoButton:{
+    position: "absolute",
+    top: "10%",
+    right: "5%",
+    // borderWidth: 2,
+    // borderColor: colors.brown,
+    // borderRadius: 5,
+  },
 });
 
 export default Enterence;

@@ -17,7 +17,7 @@ import colors from "../Colors";
 import PlayerListItem from "../PlayerListItem";
 import { Audio } from "expo-av";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { t, setLanguage,currentLang } from "../../locales/lang";
+import { t, setLanguage, currentLang } from "../../locales/lang";
 
 const Main = () => {
   const [isEditVisible, setIsEditVisible] = useState(false);
@@ -179,21 +179,17 @@ const Main = () => {
     ]);
     setHistory([]);
     setMoneybills([10, 20, 50, 100, 200, 500, 1000, 5000]);
-    setMoneyQuantity("")
+    setMoneyQuantity("");
   };
   const handleReset = () => {
-    Alert.alert(
-      t("resetGame"),
-      t("areYouSureToResetGame"),
-      [
-        {
-          text: t("no"),
-          // onPress: () => console.log('Cancel Pressed'),
-          style: "cancel",
-        },
-        { text: t("yes"), onPress: resetGame },
-      ]
-    );
+    Alert.alert(t("resetGame"), t("areYouSureToResetGame"), [
+      {
+        text: t("no"),
+        // onPress: () => console.log('Cancel Pressed'),
+        style: "cancel",
+      },
+      { text: t("yes"), onPress: resetGame },
+    ]);
   };
 
   useEffect(() => {
@@ -215,8 +211,7 @@ const Main = () => {
     }
   };
 
-  const handleLongMoneyBill = (e,i) => {
-
+  const handleLongMoneyBill = (e, i) => {
     console.log("e is ");
     console.log(e);
     console.log("i is ");
@@ -277,9 +272,11 @@ const Main = () => {
         <View style={styles.modalContainer}>
           {/* Dış kutu (card görünümü) */}
           <View style={styles.modalCard}>
-            
-            <TouchableOpacity onPress={()=>setModalVisible(false)} style={styles.modalCloseButton}>
-              <Icon name="close" size={50} color={colors.lightRed}/>
+            <TouchableOpacity
+              onPress={() => setModalVisible(false)}
+              style={styles.modalCloseButton}
+            >
+              <Icon name="close" size={50} color={colors.lightRed} />
             </TouchableOpacity>
 
             {/* İçerik scrollable */}
@@ -288,19 +285,25 @@ const Main = () => {
                 if (e.quantity == "newGamer" || e.quantity == "deleteGamer") {
                   return (
                     <View style={styles.modalItem} key={i}>
-                      <Text>{e.negatif}</Text>
+                      <View style={styles.modalItemSep}>
+                        <Text>{e.negatif}</Text>
+                      </View>
 
-                      <IconIon
-                        name={
-                          e.quantity == "newGamer"
-                            ? "person-add"
-                            : "person-remove"
-                        }
-                        size={32}
-                        color={colors.darkGreen}
-                      />
+                      <View style={[styles.modalItemSep,{width:"15%"}]}>
+                        <IconIon
+                          name={
+                            e.quantity == "newGamer"
+                              ? "person-add"
+                              : "person-remove"
+                          }
+                          size={32}
+                          color={colors.darkGreen}
+                        />
+                      </View>
 
-                      <Text>{e.pozitif}</Text>
+                      <View style={styles.modalItemSep}>
+                        <Text>{e.pozitif}</Text>
+                      </View>
                     </View>
                   );
                 } else {
@@ -355,13 +358,13 @@ const Main = () => {
 
           <View style={styles.moneyBillArea}>
             <View style={styles.moneyBillRow}>
-              {moneybills?.slice(0, 4).map((e,i) => {
+              {moneybills?.slice(0, 4).map((e, i) => {
                 return (
                   <TouchableOpacity
                     key={Math.ceil(Math.random() * 100000)}
                     style={styles.moneyBill}
                     onPress={() => handleMoneyBill(e)}
-                    onLongPress={() => handleLongMoneyBill(e,i)}
+                    onLongPress={() => handleLongMoneyBill(e, i)}
                   >
                     <View
                       style={[styles.moneyCircle, { left: -10, top: -10 }]}
@@ -383,13 +386,13 @@ const Main = () => {
             </View>
 
             <View style={styles.moneyBillRow}>
-              {moneybills.slice(4, 8).map((e,i) => {
+              {moneybills.slice(4, 8).map((e, i) => {
                 return (
                   <TouchableOpacity
                     key={Math.ceil(Math.random() * 100000)}
                     style={styles.moneyBill}
                     onPress={() => handleMoneyBill(e)}
-                    onLongPress={() => handleLongMoneyBill(e,i+4)}
+                    onLongPress={() => handleLongMoneyBill(e, i + 4)}
                   >
                     <View
                       style={[styles.moneyCircle, { left: -10, top: -10 }]}
@@ -475,8 +478,8 @@ const styles = StyleSheet.create({
     paddingTop: 35,
     paddingLeft: 30,
     paddingRight: 30,
-    borderBottomWidth:2,
-    borderBottomColor:colors.white
+    borderBottomWidth: 2,
+    borderBottomColor: colors.white,
   },
   bannerBtnArea: {
     flexDirection: "row",
@@ -487,7 +490,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     color: colors.white,
     fontWeight: "900",
-    fontFamily:"monospace",
+    fontFamily: "monospace",
   },
   playerArea: {
     // backgroundColor: "blue",
@@ -507,9 +510,9 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     fontSize: 20,
-    color:colors.white,
-    borderColor:colors.brown,
-    fontFamily:"monospace",
+    color: colors.white,
+    borderColor: colors.brown,
+    fontFamily: "monospace",
   },
   moneyArea: {
     // backgroundColor: "red",
@@ -556,8 +559,8 @@ const styles = StyleSheet.create({
     // shadowRadius: 6.68,
 
     // elevation: 11,
-    borderColor:colors.lightGreen,
-    borderWidth:2,
+    borderColor: colors.lightGreen,
+    borderWidth: 2,
     overflow: "hidden",
   },
   moneyCircle: {
@@ -583,19 +586,20 @@ const styles = StyleSheet.create({
     backgroundColor: colors.darkGreen,
     width: "90%",
     // maxHeight: "80%",
-    height:"80%",
+    height: "80%",
     borderRadius: 20,
     padding: 20,
   },
-  modalCloseButton:{
-    position:"absolute",
-    top:-25,
-    right:-15
+  modalCloseButton: {
+    position: "absolute",
+    top: -25,
+    right: -15,
   },
   modalItem: {
     backgroundColor: colors.brown,
     display: "flex",
-    justifyContent: "space-evenly",
+    // justifyContent: "space-evenly",
+    justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",
     borderRadius: 12,
@@ -603,6 +607,14 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 16,
   },
+  modalItemSep:{
+    // backgroundColor:colors.lightRed,
+    // height:"100%",
+    width:"30%",
+    display:"flex",
+    alignItems:"center",
+    justifyContent:"center"
+  }
 });
 
 export default Main;
