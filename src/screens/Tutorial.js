@@ -24,6 +24,7 @@ const Tutorial = () => {
     }
   };
 
+  
   const tutorialTexts = [
     {
       title: t("tutorial_addPerson_title"),
