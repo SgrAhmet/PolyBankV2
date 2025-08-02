@@ -1,41 +1,60 @@
-Monopoly Banka Yönetimi Uygulaması
-Bu uygulama, gerçek Monopoly oyununda para ve bankacılık işlemlerini kolaylaştırmak için geliştirilmiştir. Monopoly oyunu fiziksel banknotlarla oynanırken yaşanan para takibi zorluklarını ortadan kaldırmak amacıyla tasarlanmıştır. Oyunu bu uygulama üzerinden oynamazsınız; sadece para işlemleri ve banka yönetimi bu uygulama ile gerçekleştirilir.
+# Monopoly Banka Yönetimi Uygulaması 🎲🏦
 
-Özellikler
-Hazır Banknotlar: Uygulama içinde oyun için standart banknot değerleri bulunur. Kolay para aktarımı ve takibi için tasarlanmıştır.
+> Monopoly oyununda para işlemlerini fiziksel banknotlar yerine dijital olarak yönetmenizi sağlayan React Native uygulaması.
 
-Para Aktarımı: Oyuncular arasında para transferi hızlı ve pratik şekilde yapılabilir.
+---
 
-Online Senkronizasyon: Arkadaşınızın oyun odasını canlı takip edebilir, hem kendi hem de diğer oyuncuların bakiye bilgilerini anlık görebilirsiniz.
+## 📝 Proje Hakkında
 
-Geçmiş Takibi: Yapılan tüm işlemler "Geçmiş" ekranından takip edilerek oyunun finansal hareketleri gözlemlenebilir.
+Bu uygulama, gerçek Monopoly oyununda para ve banka işlemlerini kolaylaştırmak için tasarlanmıştır. Oyun sırasında fiziksel para ile uğraşmak yerine, tüm finansal hareketleri ve bakiyeleri bu uygulama üzerinden yönetebilirsiniz. Oyunu burada oynamazsınız, sadece para yönetimi için kullanılır.
 
-Çoklu Dil Desteği: Türkçe ve İngilizce dillerinde kullanım imkanı.
+---
 
-Kişi Ekleme/Silme: Oyuncu ekleme ve çıkarma işlemleri kolaylıkla yapılabilir.
+## 🚀 Özellikler
 
-Oyun Sıfırlama: Oyun içi tüm para ve oyuncu bilgileri sıfırlanabilir.
+- **Hazır Banknotlar:** Standart Monopoly para değerleri hazır olarak kullanılır.
+- **Para Aktarımı:** Oyuncular arası hızlı para transferi.
+- **Online Senkronizasyon:** Arkadaşlarınızın oyun odalarını gerçek zamanlı takip edin.
+- **Geçmiş Takibi:** Yapılan tüm para hareketleri kayıt altına alınır ve görüntülenir.
+- **Çoklu Dil Desteği:** Türkçe ve İngilizce dillerinde kullanım.
+- **Oyuncu Yönetimi:** Kişi ekleme ve silme işlemleri kolayca yapılır.
+- **Oyun Sıfırlama:** Tüm verileri sıfırlayarak yeni bir oyuna başlayabilirsiniz.
 
-Kullanım Senaryosu
-Monopoly oyununda para işlemlerini fiziksel banknotlarla değil, bu uygulama ile kolayca yaparak oyun deneyimini hızlandırabilir ve karışıklıkları önleyebilirsiniz. Bankacı rolündeki kişi, diğer oyuncuların bakiyelerini ve para hareketlerini takip edebilir.
+---
 
-Teknolojiler
-React Native
+## 🎮 Kullanım Senaryosu
 
-Firebase (Firestore)
+- Monopoly oyununda para işlemlerini dijital ortamda yönetmek isteyenler için ideal.
+- Bankacı rolündeki oyuncular, tüm para hareketlerini kolayca takip eder.
+- Online modda diğer oyuncuların bakiye ve hareketlerini anlık görebilirsiniz.
 
-Expo
+---
 
-React Native Vector Icons
+## ⚙️ Teknolojiler
 
-Kurulum ve Çalıştırma
-Depoyu klonlayın.
+- React Native
+- Expo
+- Firebase Firestore
+- React Native Vector Icons
 
-Gerekli bağımlılıkları yükleyin: npm install veya yarn install
+---
 
-Firebase yapılandırmanızı .env dosyasına ekleyin.
+## 📸 Uygulama Görselleri
 
-Uygulamayı başlatın: expo start
+<!-- Görselleri buraya ekleyebilirsiniz -->
 
-Lisans
-MIT Lisansı altında sunulmaktadır.
+![Ana Ekran](./screenshots/home-screen.png)
+![Para Aktarma](./screenshots/money-transfer.png)
+![Geçmiş Ekranı](./screenshots/history.png)
+
+---
+
+## 💻 Kurulum & Çalıştırma
+
+1. Depoyu klonlayın
+
+2. Gerekli bağımlılıkları yükleyin: npm install veya yarn install
+
+3. Firebase yapılandırmanızı .env dosyasına ekleyin.
+
+4. Uygulamayı başlatın: expo start
