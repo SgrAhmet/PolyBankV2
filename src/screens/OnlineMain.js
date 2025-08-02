@@ -310,7 +310,7 @@ const OnlineMain = ({ route }) => {
       </View>
 
       {/* {========= Modal =========} */}
-
+      {/* Array.isArray(history) && */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -327,13 +327,17 @@ const OnlineMain = ({ route }) => {
 
             {/* İçerik scrollable */}
             <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
-              {Array.isArray(history) &&
-                history.map((e, i) => {
-                  if (e.quantity == "newGamer" || e.quantity == "deleteGamer") {
-                    return (
-                      <View style={styles.modalItem} key={i}>
-                        <Text>{e.negatif}</Text>
+              { Array.isArray(history) && history.map((e, i) => {
+                if (e.quantity == "newGamer" || e.quantity == "deleteGamer") {
+                  return (
+                    <View style={styles.modalItem} key={i}>
 
+                      <View style={styles.modalItemSep}>
+                        <Text>{e.negatif == "Banka" ? t("bank") : e.negatif}</Text>
+                        {/* <Text>{e.negatif}</Text> */}
+                      </View>
+
+                      <View style={[styles.modalItemSep,{width:"15%"}]}>
                         <IconIon
                           name={
                             e.quantity == "newGamer"
@@ -343,25 +347,31 @@ const OnlineMain = ({ route }) => {
                           size={32}
                           color={colors.darkGreen}
                         />
+                      </View>
 
-                        <Text>{e.pozitif}</Text>
+                      <View style={styles.modalItemSep}>
+                        <Text>{e.pozitif == "Banka" ? t("bank") : e.pozitif}</Text>
+                        {/* <Text>{e.pozitif}</Text> */}
                       </View>
-                    );
-                  } else {
-                    return (
-                      <View style={styles.modalItem} key={i}>
-                        <Text>{e.negatif}</Text>
-                        <Text>{e.quantity} ₩</Text>
-                        <Icon5
-                          name="long-arrow-alt-right"
-                          size={32}
-                          color={colors.darkGreen}
-                        />
-                        <Text>{e.pozitif}</Text>
-                      </View>
-                    );
-                  }
-                })}
+                    </View>
+                  );
+                } else {
+                  return (
+                    <View style={styles.modalItem} key={i}>
+                        <Text>{e.negatif == "Banka" ? t("bank") : e.negatif}</Text>
+                      {/* <Text>{e.negatif}</Text> */}
+                      <Text>{e.quantity} $</Text>
+                      <Icon5
+                        name="long-arrow-alt-right"
+                        size={32}
+                        color={colors.darkGreen}
+                      />
+                        <Text>{e.pozitif == "Banka" ? t("bank") : e.pozitif}</Text>
+                      {/* <Text>{e.pozitif}</Text> */}
+                    </View>
+                  );
+                }
+              })}
             </ScrollView>
           </View>
         </View>
@@ -631,25 +641,34 @@ const styles = StyleSheet.create({
     backgroundColor: colors.darkGreen,
     width: "90%",
     // maxHeight: "80%",
-    height:"80%",
+    height: "80%",
     borderRadius: 20,
     padding: 20,
   },
-  modalCloseButton:{
-    position:"absolute",
-    top:-25,
-    right:-15
+  modalCloseButton: {
+    position: "absolute",
+    top: -25,
+    right: -15,
   },
   modalItem: {
     backgroundColor: colors.brown,
     display: "flex",
-    justifyContent: "space-evenly",
+    // justifyContent: "space-evenly",
+    justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",
     borderRadius: 12,
     gap: 20,
     padding: 10,
     marginBottom: 16,
+  },
+  modalItemSep:{
+    // backgroundColor:colors.lightRed,
+    // height:"100%",
+    width:"30%",
+    display:"flex",
+    alignItems:"center",
+    justifyContent:"center"
   },
   h2Text:{
     fontSize:20,

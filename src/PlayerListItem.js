@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
     // gap: 5,
     overflow: "hidden",
     gap: 10,
+    // width:"95%"
   },
   h3Text: {
     fontSize: 20,

@@ -290,8 +290,10 @@ const Main = () => {
                 if (e.quantity == "newGamer" || e.quantity == "deleteGamer") {
                   return (
                     <View style={styles.modalItem} key={i}>
+
                       <View style={styles.modalItemSep}>
-                        <Text>{e.negatif}</Text>
+                        <Text>{e.negatif == "Banka" ? t("bank") : e.negatif}</Text>
+                        {/* <Text>{e.negatif}</Text> */}
                       </View>
 
                       <View style={[styles.modalItemSep,{width:"15%"}]}>
@@ -307,21 +309,24 @@ const Main = () => {
                       </View>
 
                       <View style={styles.modalItemSep}>
-                        <Text>{e.pozitif}</Text>
+                        <Text>{e.pozitif == "Banka" ? t("bank") : e.pozitif}</Text>
+                        {/* <Text>{e.pozitif}</Text> */}
                       </View>
                     </View>
                   );
                 } else {
                   return (
                     <View style={styles.modalItem} key={i}>
-                      <Text>{e.negatif}</Text>
+                        <Text>{e.negatif == "Banka" ? t("bank") : e.negatif}</Text>
+                      {/* <Text>{e.negatif}</Text> */}
                       <Text>{e.quantity} $</Text>
                       <Icon5
                         name="long-arrow-alt-right"
                         size={32}
                         color={colors.darkGreen}
                       />
-                      <Text>{e.pozitif}</Text>
+                        <Text>{e.pozitif == "Banka" ? t("bank") : e.pozitif}</Text>
+                      {/* <Text>{e.pozitif}</Text> */}
                     </View>
                   );
                 }
@@ -502,6 +507,9 @@ const styles = StyleSheet.create({
     // backgroundColor: "blue",
     flexDirection: "column",
     gap: 10,
+
+    // display:"flex",
+    // alignItems:"center"
   },
   editArea: {
     flexDirection: "row",
@@ -620,7 +628,7 @@ const styles = StyleSheet.create({
     display:"flex",
     alignItems:"center",
     justifyContent:"center"
-  }
+  },
 });
 
 export default Main;

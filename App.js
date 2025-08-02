@@ -9,6 +9,7 @@ import Main from "./src/screens/Main";
 import Enterence from "./src/screens/Enterence";
 import OnlineEnterence from "./src/screens/OnlineEnterence";
 import OnlineMain from "./src/screens/OnlineMain";
+import Tutorial from "./src/screens/Tutorial";
 
 
 export default function App() {
@@ -27,6 +28,7 @@ export default function App() {
         <Stack.Screen name="Enterence" component={Enterence} />
         <Stack.Screen name="OnlineEnterence" component={OnlineEnterence} />
         <Stack.Screen name="OnlineMain" component={OnlineMain} />
+        <Stack.Screen name="Tutorial" component={Tutorial} />
       </Stack.Navigator>
     </NavigationContainer>
 

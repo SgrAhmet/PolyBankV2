@@ -36,13 +36,16 @@ const Enterence = ({ navigation }) => {
   };
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.infoButton}>
+
+<TouchableOpacity style={styles.flagButton} onPress={changeLang}>
+        <CountryFlag isoCode={lang} size={32} />
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.infoButton} onPress={()=>navigation.navigate("Tutorial")}>
         <Icon5 name="question" size={32} color={colors.brown} />
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.flagButton} onPress={changeLang}>
-        <CountryFlag isoCode={lang} size={32} />
-      </TouchableOpacity>
+     
 
       <Text style={styles.h1Text}>PolyBank</Text>
       <TouchableOpacity
