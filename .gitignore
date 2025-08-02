@@ -3,6 +3,9 @@
 #.env
 .env
 
+#screenshots/
+screenshots/
+
 # dependencies
 node_modules/
 
