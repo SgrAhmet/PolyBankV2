@@ -47,11 +47,12 @@ Bu uygulama, gerçek Monopoly oyununda para ve banka işlemlerini kolaylaştırm
 ![Ana Ekran](./screenshots/main.jpg)
 ![Geçmiş Ekranı](./screenshots/history.jpg)
 ![Online Giriş](./screenshots/onlineMain.jpg) -->
-
-<img src="./screenshots/enterence.jpg" alt="Giriş" width="400" />
-<img src="./screenshots/main.jpg" alt="Ana Ekran" width="400" />
-<img src="./screenshots/history.jpg" alt="Geçmiş Ekranı" width="400" />
-<img src="./screenshots/onlineMain.jpg" alt="Online Giriş" width="400" />
+<p float="left">
+<img src="./screenshots/enterence.jpg" alt="Giriş" width="200" />
+<img src="./screenshots/main.jpg" alt="Ana Ekran" width="200" />
+<img src="./screenshots/history.jpg" alt="Geçmiş Ekranı" width="200" />
+<img src="./screenshots/onlineMain.jpg" alt="Online Giriş" width="200" />
+</p>
 ---
 
 ## 💻 Kurulum & Çalıştırma
