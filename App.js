@@ -20,6 +20,7 @@ export default function App() {
     // <StatusBar hidden={true} />
 
     //       <Main/>
+    
     //     </View>
 
     <NavigationContainer>
